@@ -48,3 +48,5 @@ const Register: React.FC<{ onLoginClick: React.MouseEventHandler<HTMLAnchorEleme
         </div>
     );
 }
+
+export default Register;

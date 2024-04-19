@@ -29,10 +29,10 @@ export default function Header() {
             <header>
                 <h2 className="logo">PRMS Beta</h2>
                 <nav className="navigation">
-                    <a href="">Home</a>
-                    <a href="">About</a>
-                    <a href="">Services</a>
-                    <a href="">Contact</a>
+                    <a href="/">Home</a>
+                    <a href="/">About</a>
+                    <a href="/">Services</a>
+                    <a href="/">Contact</a>
                     <button className="btnLogin-popup" onClick={handleOpenClick}>Login</button>
                 </nav>
             </header>
