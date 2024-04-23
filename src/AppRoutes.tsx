@@ -17,7 +17,6 @@ export default function AppRoutes() {
             <Route path="welcome" element={<Welcome />} />
             <Route path="profile" element={<Profile />} />
           </Route>
-  
         </Route>
       </Routes>
     );

@@ -1,43 +1,50 @@
-import { Mail, LockClosed } from 'react-ionicons'
-import { useRef, useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useRef, useState, useEffect, ChangeEvent, FormEvent, MouseEventHandler } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../../../features/auth/authSlice';
+import { useLoginMutation } from '../../../features/auth/loginApiSlice';
+import { Mail, LockClosed } from 'react-ionicons';
+import { AuthResponse } from '../../../types/login';
+import { createAuthInput } from '../../customAuthInput';
+import { setActive, setOpenModal } from '../../../features/popup/popupSlice';
 
-import { useDispatch } from 'react-redux'
-import { setCredentials } from '../../../features/auth/authSlice'
-import { useLoginMutation } from '../../../features/auth/authApiSlice'
-
-const Login: React.FC<{ onRegisterClick: React.MouseEventHandler<HTMLAnchorElement> }> = ({ onRegisterClick }) => {
-    const userRef = useRef();
-    const errRef = useRef();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [errMsg, setErrMsg] = useState('');
+const Login = () => {
+    const userRef = useRef<HTMLInputElement>(null);
+    const errRef = useRef<HTMLDivElement>(null);
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [errMsg, setErrMsg] = useState<string>('');
     const navigate = useNavigate();
 
     const [login, { isLoading }] = useLoginMutation();
     const dispatch = useDispatch();
 
+    const handleRegisterClick = () => {
+        dispatch(setActive(true));
+    };
 
     useEffect(() => {
-        userRef.current.focus();
+        userRef.current?.focus();
     }, []);
 
     useEffect(() => {
         setErrMsg('');
     }, [email, password]);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         try {
-            const tokens: AuthResponse = await login({ email: email, password: password }).unwrap()
-            dispatch(setCredentials({ ...tokens, user: email }))
-            setEmail('')
-            setPassword('')
-            navigate('/welcome')
+            const tokens: AuthResponse = await login({ email: email, password: password }).unwrap();
+            dispatch(setCredentials({ ...tokens, user: email }));
+            
+            dispatch(setOpenModal(false));
+            
+            setEmail('');
+            setPassword('');
+            
+            navigate('/welcome');
         } catch (err) {
             if (!err?.originalStatus) {
-                // isLoading: true until timeout occurs
                 setErrMsg('No Server Response');
             } else if (err.originalStatus === 400) {
                 setErrMsg('Missing Username or Password');
@@ -46,66 +53,59 @@ const Login: React.FC<{ onRegisterClick: React.MouseEventHandler<HTMLAnchorEleme
             } else {
                 setErrMsg('Login Failed');
             }
-            errRef.current.focus();
+            errRef.current?.focus();
         }
     };
 
-    const handleUserInput = (e) => setEmail(e.target.value)
-    const handlePwdInput = (e) => setPassword(e.target.value)
+    const handleUserInput = (e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
+    const handlePasswordInput = (e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
 
     return (
         <div className="form-box login">
             <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="input-box">
-                    <span className="icon">
-                        <Mail
-                            color={'#00000'}
-                            height="20px"
-                            width="20px"
-                        />
-                    </span>
-                    <input
-                        type="text"
-                        id="email"
-                        ref={userRef}
-                        value={email}
-                        onChange={handleUserInput}
-                        autoComplete="off"
-                        required
-
-                    />
-                    <label>Email</label>
-                </div>
-                <div className="input-box">
-                    <span className="icon">
-                        <LockClosed
-                            color={'#00000'}
-                            height="20px"
-                            width="20px"
-                        />
-                    </span>
-                    <input
-                        type="password"
-                        id="password"
-                        onChange={handlePwdInput}
-                        value={password}
-                        required
-                    />
-                    <label>Password</label>
-                </div>
-                <div className="remember-forgot">
-                    <label><input type="checkbox" />
-                        Remember me</label>
-                    <a href='#'>Forgot Password</a>
-                </div>
-                <button type='submit' className='btn'>Login</button>
-                <div className="login-register">
-                    <p>Don't have an account?
-                        <a href='#' className='register-link' onClick={onRegisterClick}> Register</a>
-                    </p>
-                </div>
-            </form>
+            {isLoading ? <h2>Loading...</h2> : (
+                <form onSubmit={handleSubmit}>
+                    {createAuthInput({
+                        type: "text",
+                        id: "email",
+                        ref: userRef,
+                        value: email,
+                        onChange: handleUserInput,
+                        autoComplete: "off",
+                        required: true,
+                        label: "Email",
+                        Icon: Mail,
+                        iconColor: "#00000",
+                        iconHeight: "20px",
+                        iconWidth: "20px"
+                    })}
+                    {createAuthInput({
+                        type: "password",
+                        id: "password",
+                        ref: null,
+                        value: password,
+                        onChange: handlePasswordInput,
+                        autoComplete: "current-password",
+                        required: true,
+                        label: "Password",
+                        Icon: LockClosed,
+                        iconColor: "#00000",
+                        iconHeight: "20px",
+                        iconWidth: "20px"
+                    })}
+                    <div className="remember-forgot">
+                        <label><input type="checkbox" />
+                            Remember me</label>
+                        <a href='#'>Forgot Password</a>
+                    </div>
+                    <button type='submit' className='btn'>Login</button>
+                    <div className="login-register">
+                        <p>Don't have an account?
+                            <a href='#' className='register-link' onClick={handleRegisterClick}> Register</a>
+                        </p>
+                    </div>
+                </form>
+            )}
         </div>
     );
 }
