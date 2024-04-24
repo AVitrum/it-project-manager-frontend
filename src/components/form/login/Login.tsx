@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, ChangeEvent, FormEvent, MouseEventHandler } from 'react';
+import { useRef, useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../../features/auth/authSlice';
@@ -23,6 +23,11 @@ const Login = () => {
         dispatch(setActive(true));
     };
 
+    const handleGoogleAuthClick = (e: MouseEvent) => {
+        e.preventDefault();
+        window.location.href = 'https://localhost:8080/GoogleOAuth/RedirectOnOAuthServer';
+    };
+
     useEffect(() => {
         userRef.current?.focus();
     }, []);
@@ -36,12 +41,12 @@ const Login = () => {
         try {
             const tokens: AuthResponse = await login({ email: email, password: password }).unwrap();
             dispatch(setCredentials({ ...tokens, user: email }));
-            
+
             dispatch(setOpenModal(false));
-            
+
             setEmail('');
             setPassword('');
-            
+
             navigate('/welcome');
         } catch (err) {
             if (!err?.originalStatus) {
@@ -62,49 +67,56 @@ const Login = () => {
 
     return (
         <div className="form-box login">
-            <h2>Login</h2>
             {isLoading ? <h2>Loading...</h2> : (
-                <form onSubmit={handleSubmit}>
-                    {createAuthInput({
-                        type: "text",
-                        id: "email",
-                        ref: userRef,
-                        value: email,
-                        onChange: handleUserInput,
-                        autoComplete: "off",
-                        required: true,
-                        label: "Email",
-                        Icon: Mail,
-                        iconColor: "#00000",
-                        iconHeight: "20px",
-                        iconWidth: "20px"
-                    })}
-                    {createAuthInput({
-                        type: "password",
-                        id: "password",
-                        ref: null,
-                        value: password,
-                        onChange: handlePasswordInput,
-                        autoComplete: "current-password",
-                        required: true,
-                        label: "Password",
-                        Icon: LockClosed,
-                        iconColor: "#00000",
-                        iconHeight: "20px",
-                        iconWidth: "20px"
-                    })}
-                    <div className="remember-forgot">
-                        <label><input type="checkbox" />
-                            Remember me</label>
-                        <a href='#'>Forgot Password</a>
-                    </div>
-                    <button type='submit' className='btn'>Login</button>
-                    <div className="login-register">
-                        <p>Don't have an account?
-                            <a href='#' className='register-link' onClick={handleRegisterClick}> Register</a>
-                        </p>
-                    </div>
-                </form>
+                <>
+                    <h2>Login</h2>
+                    <form onSubmit={handleSubmit}>
+                        {createAuthInput({
+                            type: "text",
+                            id: "email",
+                            ref: userRef,
+                            value: email,
+                            onChange: handleUserInput,
+                            autoComplete: "off",
+                            required: true,
+                            label: "Email",
+                            Icon: Mail,
+                            iconColor: "#00000",
+                            iconHeight: "20px",
+                            iconWidth: "20px"
+                        })}
+                        {createAuthInput({
+                            type: "password",
+                            id: "password",
+                            ref: null,
+                            value: password,
+                            onChange: handlePasswordInput,
+                            autoComplete: "current-password",
+                            required: true,
+                            label: "Password",
+                            Icon: LockClosed,
+                            iconColor: "#00000",
+                            iconHeight: "20px",
+                            iconWidth: "20px"
+                        })}
+                        <div className="remember-forgot">
+                            <label><input type="checkbox" />
+                                Remember me</label>
+                            <a href='#'>Forgot Password</a>
+                        </div>
+                        <button type='submit' className='btn'>Login</button>
+                        <div className="login-register">
+                            <p>Don't have an account?
+                                <a href='#' className='register-link' onClick={handleRegisterClick}> Register</a>
+                            </p>
+                        </div>
+                        <div className="login-icons">
+                            <button className='google-auth' onClick={handleGoogleAuthClick}>
+                                <img src="/Google icon.svg" alt="" />
+                            </button>
+                        </div>
+                    </form>
+                </>
             )}
         </div>
     );
