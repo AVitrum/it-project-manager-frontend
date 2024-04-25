@@ -1,6 +1,6 @@
-import { Input } from "../types/login";
+import { Input } from "../types/others";
 
-export const createAuthInput = ({
+export function createAuthInput({
     type,
     id,
     ref,
@@ -13,7 +13,7 @@ export const createAuthInput = ({
     iconColor,
     iconHeight,
     iconWidth
-}: Input) => {
+}: Input) {
     return (
         <div className="input-box">
             {Icon && (
@@ -33,4 +33,4 @@ export const createAuthInput = ({
             <label>{label}</label>
         </div>
     );
-};
+}

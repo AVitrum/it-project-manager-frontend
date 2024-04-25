@@ -1,10 +1,11 @@
-import React, { useRef, useState, ChangeEvent, FormEvent, MouseEventHandler, useEffect } from 'react';
+import { useRef, useState, ChangeEvent, FormEvent, MouseEventHandler, useEffect } from 'react';
 import { Person, Mail, LockClosed } from 'react-ionicons';
 import { createAuthInput } from '../../customAuthInput';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useRegisterMutation } from '../../../features/auth/registerApiSlice';
 import { setActive, setOpenModal } from '../../../features/popup/popupSlice';
+import { ApiError } from '../../../types/others';
 
 const Register = () => {
     const usernameRef = useRef<HTMLInputElement>(null);
@@ -21,10 +22,6 @@ const Register = () => {
     const [register, { isLoading }] = useRegisterMutation();
     const dispatch = useDispatch();
 
-    const handleLoginClick = () => {
-        dispatch(setActive(false));
-    };
-
     useEffect(() => {
         usernameRef.current?.focus();
     }, []);
@@ -33,41 +30,46 @@ const Register = () => {
         setErrMsg('');
     }, [email, password]);
 
-    const handleGoogleAuthClick = (e: MouseEvent) => {
+    function handleLoginClick() {
+        dispatch(setActive(false));
+    }
+
+    function handleGoogleAuthClick(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
         window.location.href = 'https://localhost:8080/GoogleOAuth/RedirectOnOAuthServer';
-    };
+    }    
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         try {
-            const response = await register({
+            await register({
                 email: email,
                 password: password,
                 username: username,
             }).unwrap();
         } catch (err) {
-            if (!err?.originalStatus) {
-                setErrMsg('No Server Response');
-            } else if (err.originalStatus === 400) {
-                setErrMsg('Missing Username or Password');
-            } else if (err.originalStatus === 401) {
-                setErrMsg('Unauthorized');
-            } else if (err.originalStatus === 200) {
-                setEmail('');
-                setPassword('');
-                setUsername('');
-                setPassword('');
+            if (err && typeof err === 'object' && 'status' in err) {
+                const error = err as ApiError;
+                if (error.status === 400) {
+                    setErrMsg(error.data.title);
+                } else if (error.status === 401) {
+                    setErrMsg(error.data.title);
+                } else if (error.status === 200) {
+                    setEmail('');
+                    setPassword('');
+                    setUsername('');
+                    setPassword('');
 
-                dispatch(setOpenModal(false));
+                    dispatch(setOpenModal(false));
 
-                navigate('/');
-            } else {
-                setErrMsg('Login Failed');
+                    navigate('/');
+                } else {
+                    setErrMsg('Login Failed');
+                }
             }
             errRef.current?.focus();
         }
-    };
+    }
 
     const handleUsernameInput = (e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value);
     const handleEmailInput = (e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
@@ -122,6 +124,7 @@ const Register = () => {
                             iconWidth: "20px"
                         })}
                         <button type='submit' className='btn'>Register</button>
+                        {errMsg === '' ? <></> : <p className="error-message">{errMsg}</p>}
                         <div className="login-register">
                             <p>Already have an account?
                                 <a href='#' className='login-link' onClick={handleLoginClick}> Login</a>

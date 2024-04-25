@@ -1,29 +1,31 @@
 import { useGetProfileQuery } from "../features/user/profileApiSlice.ts";
 import { Link, useNavigate } from "react-router-dom";
-import {ProfileResp} from "../types/profile.ts";
 import { useDispatch } from "react-redux";
 import { logOut } from "../features/auth/authSlice.ts";
+import { ProfileResponse } from "../types/responses.ts";
 
-const Profile: React.FC<ProfileResp> = () => {
+export default function Profile () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const onLogOut = () => {
+    function onLogOut() {
         dispatch(logOut());
         navigate("/");
     };
 
     const {
-        data: profile,
+        data: data,
         isLoading,
         isSuccess,
         isError,
         error
-    } = useGetProfileQuery();
+    } = useGetProfileQuery(undefined);
+    
     let content;
     if (isLoading) {
         content = <p>"Loading..."</p>;
     } else if (isSuccess) {
+        const profile: ProfileResponse = data;
         content = (
             <section className="profile">
                 <h1>Profile</h1>
@@ -41,5 +43,4 @@ const Profile: React.FC<ProfileResp> = () => {
     }
 
     return content
-};
-export default Profile;
+}

@@ -1,17 +1,6 @@
 import { ChangeEvent } from "react";
 
-export interface AuthState {
-    user: string | null;
-    token: string | null;
-    refreshToken: string | null;
-};
-
-export interface AuthResponse {
-    accessToken: string;
-    refreshToken: string;
-};
-
-export interface Input {
+export type Input = {
     type: string;
     id: string;
     ref: React.RefObject<HTMLInputElement> | null;
@@ -25,3 +14,12 @@ export interface Input {
     iconHeight: string;
     iconWidth: string;
 };
+
+export type ApiError = {
+    status: number;
+    data: {
+        title: string,
+        status: number,
+        traceId: string
+    };
+}

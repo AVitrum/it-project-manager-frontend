@@ -5,17 +5,18 @@ import Login from '../components/form/login/Login';
 import Registration from '../components/form/registration/Registration';
 import { selectCurrentToken } from '../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
+
 export default function Header() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleOpenClick = () => {
+    function handleOpenClick() {
         dispatch(setOpenModal(true));
-    };
+    }
 
-    const onProfileButtonClick = () => {
+    function onProfileButtonClick() {
         navigate("/profile");
-    };
+    }
 
     const token = useSelector(selectCurrentToken);
 

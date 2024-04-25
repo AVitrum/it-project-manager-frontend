@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice";
 import { Link } from "react-router-dom";
 
-const Welcome = () => {
+export default function Welcome() {
     const user = useSelector(selectCurrentUser);
     const welcome = user ? `Welcome ${user}!` : 'Welcome!';
 
@@ -15,4 +15,3 @@ const Welcome = () => {
 
     return content;
 }
-export default Welcome;

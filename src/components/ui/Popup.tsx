@@ -3,19 +3,19 @@ import { CloseOutline } from 'react-ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectActive, selectOpenModal, setOpenModal } from '../../features/popup/popupSlice';
 
-interface PopupProps {
+type PopupProps = {
     children: ReactNode;
-}
+};
 
-const Popup = ({ children }: PopupProps) => {
+export default function Popup({ children }: PopupProps) {
     const active = useSelector(selectActive);
     const openModal = useSelector(selectOpenModal);
 
     const dispatch = useDispatch();
 
-    const handleCloseClick = () => {
+    function handleCloseClick() {
         dispatch(setOpenModal(false));
-    };
+    }
 
     return (
         <div className={`wrapper ${active ? 'active' : ''} ${openModal ? 'active-popup' : ''}`}>
@@ -30,5 +30,3 @@ const Popup = ({ children }: PopupProps) => {
         </div>
     );
 };
-
-export default Popup;
