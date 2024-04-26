@@ -78,7 +78,7 @@ header {
 
 .navigation .btnLogin-popup:hover {
     background: black;
-    color: #162938;
+    color: #fff;
 }
 
 .wrapper {
@@ -103,7 +103,7 @@ header {
 }
 
 .wrapper.active {
-    height: 520px;
+    height: 550px;
 }
 
 .wrapper .form-box {
@@ -118,14 +118,14 @@ header {
 
 .wrapper.active .form-box.login {
     transition: none;
-    transform: translateX(-400px);
+    transform: translateX(-550px);
 }
 
 
 .wrapper .form-box.register {
     position: absolute;
     transition: none;
-    transform: translateX(400px);
+    transform: translateX(550px);
 }
 
 .wrapper.active .form-box.register {
@@ -170,7 +170,7 @@ header {
     left: 5px;
     transform: translateY(-50%);
     font-size: 1em;
-    font-weight: 500;
+    font-weight: 550;
     pointer-events: none;
     transition: .5s;
 }
@@ -253,4 +253,35 @@ header {
 
 .login-register p a:hover {
     text-decoration: underline;
+}
+
+.form-box .login-icons {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.form-box .login-icons button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.google-auth {
+    display: inline-block;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.google-auth img {
+    height: 40px;
+    width: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
 }

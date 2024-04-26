@@ -1,46 +1,54 @@
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setOpenModal } from '../features/popup/popupSlice';
+import Popup from '../components/ui/Popup';
 import Login from '../components/form/login/Login';
 import Registration from '../components/form/registration/Registration';
-import Popup from '../components/ui/Popup';
+import { selectCurrentToken } from '../features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 export default function Header() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const [active, setActive] = useState(false);
-    const [openModal, setOpenModal] = useState(false);
+    function handleOpenClick() {
+        dispatch(setOpenModal(true));
+    }
 
-    const handleOpenClick = () => {
-        setOpenModal(true);
-    };
+    function onProfileButtonClick() {
+        navigate("/profile");
+    }
 
-    const handleCloseClick = () => {
-        setOpenModal(false);
-    };
-
-    const handleRegisterClick = () => {
-        setActive(true);
-    };
-
-    const handleLoginClick = () => {
-        setActive(false);
-    };
+    const token = useSelector(selectCurrentToken);
 
     return (
         <>
             <header>
                 <h2 className="logo">PRMS Beta</h2>
                 <nav className="navigation">
-                    <a href="">Home</a>
-                    <a href="">About</a>
-                    <a href="">Services</a>
-                    <a href="">Contact</a>
-                    <button className="btnLogin-popup" onClick={handleOpenClick}>Login</button>
+                    <a href="/">Home</a>
+                    <a href="/">About</a>
+                    <a href="/">Services</a>
+                    <a href="/">Contact</a>
+                    {token ? (
+                        <button className="btnLogin-popup" onClick={onProfileButtonClick}>
+                            Profile
+                        </button>
+                    ) : (
+                        <button className="btnLogin-popup" onClick={handleOpenClick}>
+                            Login
+                        </button>
+                    )}
                 </nav>
             </header>
 
-            <Popup active={active} openModal={openModal} handleCloseClick={handleCloseClick}>
-                <Login onRegisterClick={handleRegisterClick} />
-                <Registration onLoginClick={handleLoginClick} />
+            <Popup>
+                <Login />
+                <Registration />
             </Popup>
+
+            <ToastContainer/>
         </>
     );
 }
