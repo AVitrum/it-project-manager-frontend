@@ -1,6 +1,7 @@
-import { Input } from "../types/others";
+import { Input } from "../../types/others";
 
-export function createAuthInput({
+
+export function AuthInput({
     type,
     id,
     ref,

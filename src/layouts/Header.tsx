@@ -5,6 +5,8 @@ import Login from '../components/form/login/Login';
 import Registration from '../components/form/registration/Registration';
 import { selectCurrentToken } from '../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 export default function Header() {
     const dispatch = useDispatch();
@@ -45,6 +47,8 @@ export default function Header() {
                 <Login />
                 <Registration />
             </Popup>
+
+            <ToastContainer/>
         </>
     );
 }
