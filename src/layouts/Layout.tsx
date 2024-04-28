@@ -3,7 +3,7 @@ import Header from "../layouts/Header";
 
 export default function Layout() {
     return (
-        <div>
+        <div className="layout">
             <Header />
             <main>
                 <Outlet />

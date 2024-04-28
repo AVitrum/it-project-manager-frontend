@@ -43,12 +43,6 @@ export default function Header() {
                 </nav>
             </header>
 
-            <Popup>
-                <Login />
-                <Registration />
-            </Popup>
-
-            <ToastContainer/>
         </>
     );
 }
