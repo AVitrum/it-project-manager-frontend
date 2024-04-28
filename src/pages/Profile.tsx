@@ -29,6 +29,7 @@ export default function Profile () {
         content = (
             <section className="profile">
                 <h1>Profile</h1>
+                <img src={profile.imageUrl} alt="Profile Image" />
                 <p>{profile.id}</p>
                 <p>{profile.username}</p>
                 <p>{profile.email}</p>

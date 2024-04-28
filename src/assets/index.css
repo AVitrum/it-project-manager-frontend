@@ -285,3 +285,9 @@ header {
     font-size: 14px;
     margin-top: 5px;
 }
+
+.profile img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
