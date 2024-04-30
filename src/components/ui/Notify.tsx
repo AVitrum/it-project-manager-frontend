@@ -1,6 +1,6 @@
 import { Id, toast } from "react-toastify";
 
-export function NotifyError(message: string) {
+export function notifyError(message: string) {
     toast.error(message, {
         position: "top-right",
         autoClose: 5000,
@@ -13,7 +13,7 @@ export function NotifyError(message: string) {
     });
 }
 
-export function NotifySuccess(message: string) {
+export function notifySuccess(message: string) {
     toast.success(message, {
         position: "top-right",
         autoClose: 5000,
@@ -26,7 +26,20 @@ export function NotifySuccess(message: string) {
     });
 }
 
-export function NotifyInfo(message: string) {
+export function notifyInfo(message: string) {
+    toast.info(message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+    });
+}
+
+export function notifyInfoLoading(message: string) {
     const toastId = toast.info(message, {
         position: "top-right",
         autoClose: false,
@@ -40,6 +53,6 @@ export function NotifyInfo(message: string) {
     return toastId;
 }
 
-export function CloseNotify(toastId: Id) {
+export function closeNotify(toastId: Id) {
     toast.dismiss(toastId);
 }

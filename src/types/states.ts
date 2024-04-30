@@ -1,6 +1,5 @@
 export type PopupState = {
-    active: boolean,
-    openModal: boolean,
+    isActive: boolean,
 };
 
 export type AuthState = {

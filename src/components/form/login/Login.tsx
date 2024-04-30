@@ -3,14 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../../features/auth/authSlice';
 import { useLoginMutation } from '../../../features/auth/loginApiSlice';
-import { Mail, LockClosed } from 'react-ionicons';
-import { setActive, setOpenModal } from '../../../features/popup/popupSlice';
+import { MailOutline, LockClosedOutline } from 'react-ionicons';
+import { setActive } from '../../../features/popup/popupSlice';
 import { AuthResponse } from '../../../types/responses';
 import { ApiError } from '../../../types/others';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthInput } from '../../ui/AuthInput';
-import { CloseNotify, NotifyError, NotifyInfo, NotifySuccess } from '../../ui/Notify';
+import { closeNotify, notifyError, notifyInfo, notifyInfoLoading, notifySuccess } from '../../ui/Notify';
 import { Id } from 'react-toastify';
+import { useSendVerificationMutation } from '../../../features/auth/sendVerifiractionApiSlice';
 
 const Login = () => {
     const userRef = useRef<HTMLInputElement>(null);
@@ -19,10 +20,11 @@ const Login = () => {
     const [password, setPassword] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [toastId, setToastId] = useState<Id | null>(null);
-    const navigate = useNavigate();
-
     const [login] = useLoginMutation();
+    const [sendVerificationToken] = useSendVerificationMutation();
+
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         userRef.current?.focus();
@@ -34,9 +36,9 @@ const Login = () => {
 
     useEffect(() => {
         if (isLoading) {
-            setToastId(NotifyInfo('Logging in...'));
+            setToastId(notifyInfoLoading('Logging in...'));
         } else {
-            if (toastId !== null) CloseNotify(toastId);
+            if (toastId !== null) closeNotify(toastId);
         }
     }, [isLoading]);
 
@@ -44,9 +46,34 @@ const Login = () => {
         dispatch(setActive(true));
     }
 
+    function handleResetClick() {
+        navigate("/resetPassword");
+    }
+
     function handleGoogleAuthClick(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
         window.location.href = 'https://localhost:8080/GoogleOAuth/RedirectOnOAuthServer';
+    }
+
+    async function navigateToVerificationPage() {
+        setIsLoading(true);
+        try {
+            notifyInfo("We have sent you a confirmation code by mail.");
+            await sendVerificationToken({ email: email }).unwrap();
+            setIsLoading(false);
+            dispatch(setActive(false));
+            setTimeout(() => {
+                navigate("/verification");
+            }, 1000);
+        } catch (err) {
+            setIsLoading(false);
+            if (err && typeof err === 'object' && 'status' in err) {
+                const error = err as ApiError;
+                if (error.originalStatus === 400) {
+                    notifyError("Something went wrong")
+                }
+            }
+        }
     }
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -57,29 +84,32 @@ const Login = () => {
             const tokens: AuthResponse = await login({ email: email, password: password }).unwrap();
             dispatch(setCredentials({ ...tokens, user: email }));
 
-            dispatch(setOpenModal(false));
-
             setEmail('');
             setPassword('');
             setIsLoading(false);
 
-            NotifySuccess("Welcome!");
+            notifySuccess("Welcome!");
             navigate('/welcome');
         } catch (err) {
             setIsLoading(false);
 
             if (err && typeof err === 'object' && 'status' in err) {
                 const error = err as ApiError;
-                if (error.status === 400) {
+                const msg = "Not verified! Please verify your account";
+
+                if (error.status === 400 && error.data.title != msg) {
                     console.log(error.status);
-                    NotifyError(error.data.title);
-                } else if (error.status === 401) {
-                    NotifyError(error.data.title);
+                    notifyError(error.data.title);
+                } else if (error.status === 400 && error.data.title == msg) {
+                    await navigateToVerificationPage();
+                }
+                else if (error.status === 401) {
+                    notifyError(error.data.title);
                 } else {
-                    NotifyError(error.data.title);
+                    notifyError(error.data.title);
                 }
             } else {
-                NotifyError('No Server Response');
+                notifyError('No Server Response');
             }
             errRef.current?.focus();
         }
@@ -101,7 +131,7 @@ const Login = () => {
                     autoComplete: "off",
                     required: true,
                     label: "Email",
-                    Icon: Mail,
+                    Icon: MailOutline,
                     iconColor: "#00000",
                     iconHeight: "20px",
                     iconWidth: "20px"
@@ -115,7 +145,7 @@ const Login = () => {
                     autoComplete: "current-password",
                     required: true,
                     label: "Password",
-                    Icon: LockClosed,
+                    Icon: LockClosedOutline,
                     iconColor: "#00000",
                     iconHeight: "20px",
                     iconWidth: "20px"
@@ -127,13 +157,17 @@ const Login = () => {
                 </div>
                 <button type='submit' className='btn'>Login</button>
                 <div className="login-register">
+                    <p>Forgot your password?
+                        <a href='#' className='register-link' onClick={handleResetClick}> Reset</a>
+                    </p>
+                    <br></br>
                     <p>Don't have an account?
                         <a href='#' className='register-link' onClick={handleRegisterClick}> Register</a>
                     </p>
                 </div>
                 <div className="login-icons">
                     <button className='google-auth' onClick={handleGoogleAuthClick}>
-                        <img src="/Google icon.svg" alt="" />
+                        <img src="/icons8-google.svg" alt="" />
                     </button>
                 </div>
             </form>
