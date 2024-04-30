@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice";
 import { Link } from "react-router-dom";
 
-export default function Welcome() {
+export default function WelcomePage() {
     const user = useSelector(selectCurrentUser);
     const welcome = user ? `Welcome ${user}!` : 'Welcome!';
 

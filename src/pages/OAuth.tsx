@@ -2,9 +2,9 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setCredentials } from "../features/auth/authSlice";
 import { useEffect } from "react";
-import { NotifySuccess } from "../components/ui/Notify";
+import { notifySuccess } from "../components/ui/Notify";
 
-export default function OAuth() {
+export default function OAuthPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -15,7 +15,7 @@ export default function OAuth() {
 
         dispatch(setCredentials({ accessToken: accessToken, refreshToken: refreshToken }));
 
-        NotifySuccess("Welcome!")
+        notifySuccess("Welcome!")
 
         setTimeout(() => {
             navigate("/profile");

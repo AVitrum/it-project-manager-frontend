@@ -3,27 +3,22 @@ import { RootState } from '../../app/store';
 import { PopupState } from '../../types/states';
 
 const initialState: PopupState = {
-    active: false,
-    openModal: false,
+    isActive: false
 };
 
 const popupSlice = createSlice({
     name: 'popup',
     initialState,
     reducers: {
-        setActive: function(state, action) {
-            state.active = action.payload;
-        },
-        setOpenModal: function(state, action) {
-            state.openModal = action.payload;
+        setActive: function (state, action) {
+            state.isActive = action.payload;
         },
     },
 });
 
-export const { setActive, setOpenModal } = popupSlice.actions;
+export const { setActive } = popupSlice.actions;
 
 export default popupSlice.reducer;
 
 export const selectPopup = (state: RootState) => state.popup;
-export const selectActive = (state: RootState) => state.popup.active;
-export const selectOpenModal = (state: RootState) => state.popup.openModal;
+export const selectActive = (state: RootState) => state.popup.isActive;

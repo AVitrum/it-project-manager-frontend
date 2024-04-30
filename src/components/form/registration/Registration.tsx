@@ -1,15 +1,15 @@
 import { useRef, useState, ChangeEvent, FormEvent, useEffect } from 'react';
-import { Person, Mail, LockClosed } from 'react-ionicons';
+import { PersonOutline, MailOutline, LockClosedOutline } from 'react-ionicons';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useRegisterMutation } from '../../../features/auth/registerApiSlice';
-import { setActive, setOpenModal } from '../../../features/popup/popupSlice';
+import { setActive } from '../../../features/popup/popupSlice';
 import { ApiError } from '../../../types/others';
 import { AuthInput } from '../../ui/AuthInput';
-import { CloseNotify, NotifyError, NotifyInfo, NotifySuccess } from '../../ui/Notify';
+import { closeNotify, notifyError, notifyInfoLoading, notifySuccess } from '../../ui/Notify';
 import { Id } from 'react-toastify';
 
-const Register = () => {
+export default function Register() {
     const usernameRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
@@ -20,9 +20,9 @@ const Register = () => {
     const [password, setPassword] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [toastId, setToastId] = useState<Id | null>(null);
-    const navigate = useNavigate();
-
     const [register] = useRegisterMutation();
+
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -34,9 +34,9 @@ const Register = () => {
 
     useEffect(() => {
         if (isLoading) {
-            setToastId(NotifyInfo('Loading...'));
+            setToastId(notifyInfoLoading('Loading...'));
         } else {
-            if (toastId !== null) CloseNotify(toastId);
+            if (toastId !== null) closeNotify(toastId);
         }
     }, [isLoading]);
 
@@ -59,28 +59,39 @@ const Register = () => {
                 password: password,
                 username: username,
             }).unwrap();
-
             setIsLoading(false);
+
+            setEmail('');
+            setPassword('');
+            setUsername('');
+            setPassword('');
+
+            notifySuccess("Registered!");
+            dispatch(setActive(false));
         } catch (err) {
             setIsLoading(false);
             if (err && typeof err === 'object' && 'status' in err) {
                 const error = err as ApiError;
                 if (error.status === 400) {
-                    NotifyError(error.data.title);
+                    if (error.data.errors?.Password?.[0]) {
+                        notifyError(error.data.errors.Password[0]);
+                    }
+                    else {
+                        notifyError(error.data.title);
+                    }
                 } else if (error.status === 401) {
-                    NotifyError(error.data.title);
+                    notifyError(error.data.title);
                 } else if (error.status === 200) {
                     setEmail('');
                     setPassword('');
                     setUsername('');
                     setPassword('');
 
-                    dispatch(setOpenModal(false));
 
-                    NotifySuccess("Registered!");
+                    notifySuccess("Registered!");
                     navigate('/');
                 } else {
-                    NotifyError('Failed');
+                    notifyError('Failed');
                 }
             }
             errRef.current?.focus();
@@ -104,7 +115,7 @@ const Register = () => {
                     autoComplete: "off",
                     required: true,
                     label: "Username",
-                    Icon: Person,
+                    Icon: PersonOutline,
                     iconColor: "#00000",
                     iconHeight: "20px",
                     iconWidth: "20px"
@@ -115,10 +126,10 @@ const Register = () => {
                     ref: emailRef,
                     value: email,
                     onChange: handleEmailInput,
-                    autoComplete: "off",
+                    autoComplete: "on",
                     required: true,
                     label: "Email",
-                    Icon: Mail,
+                    Icon: MailOutline,
                     iconColor: "#00000",
                     iconHeight: "20px",
                     iconWidth: "20px"
@@ -129,10 +140,10 @@ const Register = () => {
                     ref: passwordRef,
                     value: password,
                     onChange: handlePasswordInput,
-                    autoComplete: "off",
+                    autoComplete: "on",
                     required: true,
                     label: "Password",
-                    Icon: LockClosed,
+                    Icon: LockClosedOutline,
                     iconColor: "#00000",
                     iconHeight: "20px",
                     iconWidth: "20px"
@@ -145,12 +156,10 @@ const Register = () => {
                 </div>
                 <div className="login-icons">
                     <button className='google-auth' onClick={handleGoogleAuthClick}>
-                        <img src="/Google icon.svg" alt="" />
+                        <img src="/icons8-google.svg" alt="" />
                     </button>
                 </div>
             </form>
         </div>
     );
 }
-
-export default Register;

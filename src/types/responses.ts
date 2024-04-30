@@ -4,7 +4,7 @@ export type ProfileResponse = {
     email: string,
     phoneNumber: string | null,
     creationDate: string,
-    imageUrl: string
+    imageUrl: string | null
 };
 
 export type AuthResponse = {

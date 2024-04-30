@@ -17,9 +17,11 @@ export type Input = {
 
 export type ApiError = {
     status: number;
+    originalStatus: number
     data: {
         title: string,
         status: number,
-        traceId: string
+        traceId: string,
+        [key: string]: any,
     };
-}
+};

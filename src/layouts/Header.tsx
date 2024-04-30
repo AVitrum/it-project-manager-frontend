@@ -1,19 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { setOpenModal } from '../features/popup/popupSlice';
-import Popup from '../components/ui/Popup';
-import Login from '../components/form/login/Login';
-import Registration from '../components/form/registration/Registration';
+import { useSelector } from 'react-redux';
 import { selectCurrentToken } from '../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
+
 
 export default function Header() {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     function handleOpenClick() {
-        dispatch(setOpenModal(true));
+        navigate("/auth");
     }
 
     function onProfileButtonClick() {
@@ -37,12 +32,11 @@ export default function Header() {
                         </button>
                     ) : (
                         <button className="btnLogin-popup" onClick={handleOpenClick}>
-                            Login
+                            Auth
                         </button>
                     )}
                 </nav>
             </header>
-
         </>
     );
 }
