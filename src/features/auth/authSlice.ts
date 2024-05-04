@@ -28,6 +28,8 @@ const authSlice = createSlice({
             localStorage.removeItem('user');
             localStorage.removeItem('token');
             localStorage.removeItem('refreshToken');
+
+            window.location.assign("/");
         },
     },
 });

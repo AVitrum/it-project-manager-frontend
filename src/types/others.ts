@@ -15,6 +15,11 @@ export type Input = {
     iconWidth: string;
 };
 
+export type PhoneInput = {
+    value: string,
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+};
+
 export type ApiError = {
     status: number;
     originalStatus: number

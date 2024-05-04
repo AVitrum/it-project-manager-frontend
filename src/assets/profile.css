@@ -2,7 +2,7 @@
     margin: 0 auto;
     padding: 20px;
     width: 120%; 
-    max-width: 600px; 
+    max-width: 600; 
     margin-top: 50px; 
     margin-bottom: 50px;
     background: transparent;
@@ -39,7 +39,7 @@
     margin-top: 20px;
     text-align: center;
 }
-
+.profile .confirm-button,
 .profile .edit-button {
     margin-top: 20px;
     width: 100%;
@@ -49,10 +49,16 @@
     outline: none;
     border-radius: 6px;
     cursor: pointer;
+    margin-right: 10px;
     font-size: 1em;
     color: #e7eaed;
     font-weight: 500;
     transition: background-color 0.5s, color 0.5s;
+}
+
+.profile .confirm-button:hover {
+    background-color: #3da541;
+    color: #e7eaed;
 }
 
 .profile .edit-button:hover {
@@ -87,5 +93,71 @@
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
-  }
-  
+}
+
+.phone-box {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.phone-box label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 1em;
+    font-weight: 550;
+    pointer-events: none;
+    color: #e7eaed;
+    transition: .5s;
+}
+
+.input-box input:focus~label,
+.input-box input:valid~label {
+    top: -5px;
+}
+
+
+.phone-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: #e7eaed;
+    font-weight: 600;
+    padding: 0 35px 0 5px;
+}
+.phone-box select {
+    flex: 1;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: #e7eaed;
+    font-weight: 600;
+    padding: 0 0px 0px 0px;
+}
+
+.phone-box .icon {
+    position: absolute;
+    right: 8px;
+    font-size: 1.2em;
+    color: #e7eaed;
+    line-height: 57px;
+}
+
+.phone-box::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 35px;
+    width: 100%;
+    height: 2px;
+    background-color: #e7eaed; 
+}

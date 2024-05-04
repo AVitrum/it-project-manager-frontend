@@ -9,16 +9,39 @@ import { useUploadPhotoMutation } from "../features/user/uploadPhotoApiSlice.ts"
 import { closeNotify, notifyError, notifyInfoLoading } from "../components/ui/Notify.tsx";
 import { Id } from "react-toastify";
 import { ApiError } from "../types/others.ts";
+import { AuthInput } from "../components/ui/AuthInput.tsx";
+import { PersonOutline, PhonePortraitOutline } from "react-ionicons";
+import { useUpdateInfoMutation } from "../features/user/updateUserApiSlice.ts";
+
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
     const [uploadPhoto] = useUploadPhotoMutation();
+    const [updateUser] = useUpdateInfoMutation();
+
+    const [username, setUsername] = useState<string>('');
+    const [phone, setPhone] = useState<string>('');
+    const [countryCode, setCountryCode] = useState('+1');
+
     const [isPhotoLoading, setIsPhotoLoading] = useState<boolean>(false);
+    const [isChangeProfilePressed, setIsChangeProfilePressed] = useState<boolean>(false);
+
     const [toastId, setToastId] = useState<Id | null>(null);
+
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    function CountryCodeSelect() {
+        const handleCountryCodeChange = (e: ChangeEvent<HTMLSelectElement>) => setCountryCode(e.target.value);
 
+        return (
+            <select value={countryCode} onChange={handleCountryCodeChange}>
+                <option value="+1">+1 (USA)</option>
+                <option value="+380">+380 (UA)</option>
+            </select>
+        );
+    }
 
     useEffect(() => {
         if (isPhotoLoading) {
@@ -33,9 +56,50 @@ export default function ProfilePage() {
         navigate("/");
     };
 
+    function handleChangeProfile() {
+        setIsChangeProfilePressed(true);
+    }
+
     function handleChangePassword() {
         navigate("/changePassword");
     }
+
+    async function handleSubmitProfile() {
+        try {
+            setIsPhotoLoading(true);
+
+            if (phone === '') {
+                await updateUser({ username: username }).unwrap();
+            } else {
+                await updateUser({ phone: countryCode + phone, username: username }).unwrap();
+            }
+
+            setIsPhotoLoading(false);
+            setIsChangeProfilePressed(false);
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 300);
+        } catch (err) {
+            setIsPhotoLoading(false);
+            if (err && typeof err === 'object' && 'status' in err) {
+                const error = err as ApiError;
+                if (error.status === 400) {
+                    if (error.data.errors?.Phone?.[0]) {
+                        notifyError(error.data.errors.Phone[0]);
+                    }
+                    else {
+                        notifyError(error.data.title);
+                    }
+                } else {
+                    notifyError('Server error');
+                }
+            }
+        }
+    }
+
+    const handleUserInput = (e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value);
+    const handlePhoneInput = (e: ChangeEvent<HTMLInputElement>) => setPhone(e.target.value);
 
     async function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
@@ -78,6 +142,7 @@ export default function ProfilePage() {
         error
     } = useGetProfileQuery(undefined);
 
+
     let content;
     if (isLoading) {
         content = <p>"Loading..."</p>;
@@ -85,7 +150,6 @@ export default function ProfilePage() {
         const profile: ProfileResponse = data;
 
         const date = new Date(profile.creationDate);
-
         const options: Intl.DateTimeFormatOptions = {
             year: 'numeric',
             month: '2-digit',
@@ -94,18 +158,49 @@ export default function ProfilePage() {
             minute: '2-digit',
             second: '2-digit'
         };
-
         const formattedDate = date.toLocaleDateString('uk-UA', options);
 
         content = (
             <section className="profile">
                 <h1>Profile</h1>
                 {profile.imageUrl === null ? <></> : <img src={profile.imageUrl} alt="Profile Image" />}
-                <p>Username: {profile.username}</p>
+                {isChangeProfilePressed ? AuthInput({
+                    type: "text",
+                    id: "username",
+                    ref: null,
+                    value: username,
+                    onChange: handleUserInput,
+                    autoComplete: "off",
+                    required: true,
+                    label: "Username",
+                    Icon: PersonOutline,
+                    iconColor: "#00000",
+                    iconHeight: "20px",
+                    iconWidth: "20px"
+                }) : <p>Username: {profile.username}</p>}
+                {isChangeProfilePressed ?
+                    <>
+                        <div className="phone-box">
+                            <span className="icon">
+                                <PhonePortraitOutline
+                                    color="#00000"
+                                    height="20px"
+                                    width="20px" />
+                            </span>
+                            <CountryCodeSelect />
+                            <input
+                                type="text"
+                                value={phone}
+                                onChange={handlePhoneInput}
+                            />
+                        </div>
+                        <br />
+                    </>
+                    : <></>
+                }
+                 {profile.phoneNumber && !isChangeProfilePressed ? <p>Phone: {profile.phoneNumber}</p> : <></>}
                 <p>Email: {profile.email}</p>
                 <p>CreatedAt: {formattedDate}</p>
-                {profile.phoneNumber ? <p>Phone: {profile.phoneNumber}</p> : <></>}
-                <Link to="/welcome">Back to Welcome</Link>
                 <input
                     type="file"
                     ref={fileInputRef}
@@ -113,6 +208,8 @@ export default function ProfilePage() {
                     onChange={handleFileChange}
                 />
                 <div className="button-container">
+                    {isChangeProfilePressed ? <button className="confirm-button" onClick={handleSubmitProfile}>Submit</button>
+                        : <button className="edit-button" onClick={handleChangeProfile}>Change Profile</button>}
                     <button className="edit-button" onClick={handleChangePassword}>Change Password</button>
                     <button className="edit-button" onClick={handleChangePhoto}>Upload Photo</button>
                 </div>
