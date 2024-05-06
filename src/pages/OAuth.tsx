@@ -18,7 +18,8 @@ export default function OAuthPage() {
         notifySuccess("Welcome!")
 
         setTimeout(() => {
-            navigate("/profile");
+            navigate('/dashboard');
+            window.location.reload();
         }, 100);
     }, [dispatch, navigate]);
 

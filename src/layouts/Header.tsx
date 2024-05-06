@@ -11,11 +11,7 @@ export default function Header() {
     function handleOpenClick() {
         navigate("/auth");
     }
-
-    function onProfileButtonClick() {
-        navigate("/profile");
-    }
-
+    
     const token = useSelector(selectCurrentToken);
 
     return (
@@ -23,10 +19,18 @@ export default function Header() {
             <header>
                 <h2 className="logo">PRMS Beta</h2>
                 <nav className="navigation">
-                    <a href="/">Home</a>
-                    <a href="/">About</a>
-                    <a href="/">Services</a>
-                    <a href="/">Contact</a>
+                    {window.location.pathname === "/dashboard" ?
+                        <>
+                            <a href="/createCompany">
+                                Create Company
+                            </a>
+                        </> : 
+                        <>
+                            <a href="/">Home</a>
+                            <a href="/">About</a>
+                            <a href="/Dashboard">Dashboad</a>
+                        </>
+                    }
                     {token ? (
                         <DropDownMenu/>
                     ) : (

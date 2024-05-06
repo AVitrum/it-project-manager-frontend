@@ -4,7 +4,7 @@ import { ToastContainer } from "react-toastify";
 
 export default function Layout() {
     return (
-        <div className="layout">
+        <div className="">
             <Header />
             <main>
                 <Outlet />

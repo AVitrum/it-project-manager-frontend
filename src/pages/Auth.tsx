@@ -11,9 +11,11 @@ export default function AuthPage() {
     dispatch(setActive(true));
 
     return (
+        <div className="auth-container">
         <Popup>
             <Login />
             <Register />
         </Popup>
+        </div>
     );
 }

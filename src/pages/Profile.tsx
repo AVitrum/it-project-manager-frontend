@@ -1,7 +1,7 @@
 import { useGetProfileQuery } from "../features/user/profileApiSlice.ts";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, } from "react-redux";
-import { logOut, setUserInfo } from "../features/auth/authSlice.ts";
+import { logOut } from "../features/auth/authSlice.ts";
 import { ProfileResponse } from "../types/responses.ts";
 import "../assets/profile.css"
 import { ChangeEvent, useEffect, useRef, useState } from "react";
@@ -148,8 +148,6 @@ export default function ProfilePage() {
         content = <p>"Loading..."</p>;
     } else if (isSuccess) {
         const profile: ProfileResponse = data;
-
-        dispatch(setUserInfo({ username: profile.username, image: profile.imageUrl, email: profile.email }));
 
         const date = new Date(profile.creationDate);
         const options: Intl.DateTimeFormatOptions = {
