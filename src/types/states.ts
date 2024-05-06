@@ -3,7 +3,9 @@ export type PopupState = {
 };
 
 export type AuthState = {
-    user: string | null;
+    username: string | null;
     token: string | null;
+    email: string | null;
+    image: string | undefined;
     refreshToken: string | null;
 };

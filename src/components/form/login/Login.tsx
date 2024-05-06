@@ -81,8 +81,8 @@ const Login = () => {
         try {
             setIsLoading(true);
 
-            const tokens: AuthResponse = await login({ email: email, password: password }).unwrap();
-            dispatch(setCredentials({ ...tokens, user: email }));
+            const response: AuthResponse = await login({ email: email, password: password }).unwrap();
+            dispatch(setCredentials({ ...response }));
 
             setEmail('');
             setPassword('');

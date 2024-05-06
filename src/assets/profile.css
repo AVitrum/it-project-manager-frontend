@@ -1,9 +1,9 @@
 .profile {
     margin: 0 auto;
     padding: 20px;
-    width: 120%; 
-    max-width: 600; 
-    margin-top: 50px; 
+    width: auto; 
+    max-width: 700px; 
+    margin-top: 50px;
     margin-bottom: 50px;
     background: transparent;
     border: 2px solid rgba(255, 255, 255, .5);
@@ -43,7 +43,7 @@
 .profile .edit-button {
     margin-top: 20px;
     width: 100%;
-    height: 45px;
+    height: 60px;
     background: #000000;
     border: none;
     outline: none;
@@ -53,6 +53,8 @@
     font-size: 1em;
     color: #e7eaed;
     font-weight: 500;
+    padding: 0 15px;
+    align-items: center;
     transition: background-color 0.5s, color 0.5s;
 }
 
@@ -82,6 +84,8 @@
     font-size: 1em;
     color: #e7eaed;
     font-weight: 500;
+    padding: 0 15px;
+    align-items: center;
     transition: background-color 0.5s;
 }
 

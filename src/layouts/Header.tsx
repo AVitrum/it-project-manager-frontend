@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { selectCurrentToken } from '../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
+import DropDownMenu from '../components/ui/DropDownMenu';
 
 
 export default function Header() {
@@ -27,9 +28,7 @@ export default function Header() {
                     <a href="/">Services</a>
                     <a href="/">Contact</a>
                     {token ? (
-                        <button className="btnLogin-popup" onClick={onProfileButtonClick}>
-                            Profile
-                        </button>
+                        <DropDownMenu/>
                     ) : (
                         <button className="btnLogin-popup" onClick={handleOpenClick}>
                             Auth

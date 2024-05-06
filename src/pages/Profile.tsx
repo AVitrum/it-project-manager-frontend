@@ -1,7 +1,7 @@
 import { useGetProfileQuery } from "../features/user/profileApiSlice.ts";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { logOut } from "../features/auth/authSlice.ts";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, } from "react-redux";
+import { logOut, setUserInfo } from "../features/auth/authSlice.ts";
 import { ProfileResponse } from "../types/responses.ts";
 import "../assets/profile.css"
 import { ChangeEvent, useEffect, useRef, useState } from "react";
@@ -12,6 +12,7 @@ import { ApiError } from "../types/others.ts";
 import { AuthInput } from "../components/ui/AuthInput.tsx";
 import { PersonOutline, PhonePortraitOutline } from "react-ionicons";
 import { useUpdateInfoMutation } from "../features/user/updateUserApiSlice.ts";
+
 
 
 export default function ProfilePage() {
@@ -49,14 +50,15 @@ export default function ProfilePage() {
         } else {
             if (toastId !== null) closeNotify(toastId);
         }
-    }, [isPhotoLoading]);
+    }, [isPhotoLoading, username]);
 
     function handleLogOut() {
         dispatch(logOut());
         navigate("/");
     };
 
-    function handleChangeProfile() {
+    function handleChangeProfile(username: string) {
+        setUsername(username)
         setIsChangeProfilePressed(true);
     }
 
@@ -77,9 +79,7 @@ export default function ProfilePage() {
             setIsPhotoLoading(false);
             setIsChangeProfilePressed(false);
 
-            setTimeout(() => {
-                window.location.reload();
-            }, 300);
+            window.location.reload();
         } catch (err) {
             setIsPhotoLoading(false);
             if (err && typeof err === 'object' && 'status' in err) {
@@ -149,6 +149,8 @@ export default function ProfilePage() {
     } else if (isSuccess) {
         const profile: ProfileResponse = data;
 
+        dispatch(setUserInfo({ username: profile.username, image: profile.imageUrl, email: profile.email }));
+
         const date = new Date(profile.creationDate);
         const options: Intl.DateTimeFormatOptions = {
             year: 'numeric',
@@ -198,7 +200,7 @@ export default function ProfilePage() {
                     </>
                     : <></>
                 }
-                 {profile.phoneNumber && !isChangeProfilePressed ? <p>Phone: {profile.phoneNumber}</p> : <></>}
+                {profile.phoneNumber && !isChangeProfilePressed ? <p>Phone: {profile.phoneNumber}</p> : <></>}
                 <p>Email: {profile.email}</p>
                 <p>CreatedAt: {formattedDate}</p>
                 <input
@@ -209,7 +211,7 @@ export default function ProfilePage() {
                 />
                 <div className="button-container">
                     {isChangeProfilePressed ? <button className="confirm-button" onClick={handleSubmitProfile}>Submit</button>
-                        : <button className="edit-button" onClick={handleChangeProfile}>Change Profile</button>}
+                        : <button className="edit-button" onClick={() => handleChangeProfile(profile.username)}>Change Profile</button>}
                     <button className="edit-button" onClick={handleChangePassword}>Change Password</button>
                     <button className="edit-button" onClick={handleChangePhoto}>Upload Photo</button>
                 </div>

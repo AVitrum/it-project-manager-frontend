@@ -3,7 +3,9 @@ import { RootState } from "../../app/store";
 import { AuthState } from "../../types/states";
 
 const initialState: AuthState = {
-    user: localStorage.getItem('user') || null,
+    username: localStorage.getItem('username') || null,
+    email: localStorage.getItem('email') || null,
+    image: localStorage.getItem('image') || undefined,
     token: localStorage.getItem('token') || null,
     refreshToken: localStorage.getItem('refreshToken') || null
 };
@@ -12,20 +14,36 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setCredentials: function(state, action) {
-            const { user, accessToken, refreshToken } = action.payload;
-            state.user = user;
+        setUserInfo: function (state, action) {
+            const { username, image, email } = action.payload;
+            state.username = username;
+            state.image = image;
+            state.email = email;
+            localStorage.setItem('username', username);
+            localStorage.setItem('image', image);
+            localStorage.setItem('email', email);
+        },
+
+        setCredentials: function (state, action) {
+            const { username, image, accessToken, refreshToken } = action.payload;
+            state.username = username;
             state.token = accessToken;
+            state.image = image;
             state.refreshToken = refreshToken;
-            localStorage.setItem('user', user);
+            localStorage.setItem('username', username);
+            localStorage.setItem('image', image);
             localStorage.setItem('token', accessToken);
             localStorage.setItem('refreshToken', refreshToken);
         },
-        logOut: function(state) {
-            state.user = null;
+        logOut: function (state) {
+            state.username = null;
+            state.email = null;
             state.token = null;
             state.refreshToken = null;
-            localStorage.removeItem('user');
+            state.image = undefined;
+            localStorage.removeItem('username');
+            localStorage.removeItem('email');
+            localStorage.removeItem('image');
             localStorage.removeItem('token');
             localStorage.removeItem('refreshToken');
 
@@ -34,10 +52,12 @@ const authSlice = createSlice({
     },
 });
 
-export const { setCredentials, logOut } = authSlice.actions;
+export const { setCredentials, setUserInfo, logOut } = authSlice.actions;
 
 export default authSlice.reducer;
 
-export const selectCurrentUser = (state: RootState) => state.auth.user;
+export const selectCurrentUser = (state: RootState) => state.auth.username;
+export const selectCurrentEmail = (state: RootState) => state.auth.email;
+export const selectCurrentImage = (state: RootState) => state.auth.image;
 export const selectCurrentToken = (state: RootState) => state.auth.token;
-export const selectCurrentRefreshToken = (state: RootState) => state.auth.refreshToken
+export const selectCurrentRefreshToken = (state: RootState) => state.auth.refreshToken;

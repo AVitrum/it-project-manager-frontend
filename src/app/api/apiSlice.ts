@@ -28,7 +28,7 @@ async function baseQueryWithReauth(args: string | FetchArgs, api: BaseQueryApi, 
         });
         console.log(refreshResult);
         if (refreshResult?.data) {
-            const user = (api.getState() as RootState).auth.user;
+            const user = (api.getState() as RootState).auth.username;
             api.dispatch(setCredentials({ ...refreshResult.data, user }));
             result = await baseQuery(args, api, extraOptions);
         } else {
