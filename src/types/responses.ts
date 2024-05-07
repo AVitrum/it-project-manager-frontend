@@ -17,8 +17,20 @@ export type AuthResponse = {
 export type CompanyResponse = {
     id: number;
     name: string;
+    description: string;
+    budget: number;
     picture: string | undefined;
-    employees: EmployeeResponse[]
+    employees: EmployeeResponse[];
+    projects: ProjectResponse[];
+};
+
+export type ProjectResponse = {
+    id: number;
+    name: string;
+    description: string;
+    budget: number;
+    image: string | undefined
+    performers: EmployeeResponse[];
 };
 
 export type EmployeeResponse = {

@@ -10,6 +10,8 @@ import AuthPage from "./pages/Auth.tsx";
 import GetPasswordToken from "./components/form/resetPassword/GetPasswordToken.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import CreateCompanyPage from "./pages/CreateCompany.tsx";
+import CompanyDetailsPage from "./pages/CompanyDetails.tsx";
+import CreateProjectPage from "./pages/CreateProject.tsx";
 
 export default function AppRoutes() {
   return (
@@ -25,7 +27,9 @@ export default function AppRoutes() {
         {/* protected routes */}
         <Route element={<RequireAuth />}>
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="companyDetails/:id" element={<CompanyDetailsPage/>} />
           <Route path="createCompany" element={<CreateCompanyPage />} />
+          <Route path="createProject/:id" element={<CreateProjectPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="changePassword" element={<ChangePasswordPage />} />
         </Route>

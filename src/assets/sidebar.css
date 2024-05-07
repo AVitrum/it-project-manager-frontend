@@ -1,14 +1,27 @@
 .sidebar {
-    backdrop-filter: blur(20px);
     margin-top: 120px;
     margin-left: 40px;
     width: 260px;
     flex-shrink: 0;
     background: transparent;
-    height: 100%;
-    overflow: auto;
+    overflow-y: auto; 
+    height: 600px; 
 }
 
+.sidebar::-webkit-scrollbar {
+    width: 5px; 
+    background-color: transparent;
+}
+
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 5px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background-color: transparent;
+}
 .sidebar h3 {
     display: flex;
     font-size: 1.2em;
@@ -57,13 +70,12 @@
     transform: rotate(180deg);
 }
 
-.sidebar-item:not(.open):hover {
+.sidebar-title:not(.sidebar-item.open):hover {
     background-color: rgba(255, 255, 255, .1);
 }
 
-
 .sidebar-content {
-    padding-top: 10px;
+    padding-top: 5px;
     padding-left: 10px;
     height: 0;
     overflow: hidden;
@@ -74,8 +86,9 @@
     width: 1.5em;
 }
 
-.sidebar-content:not(.sidebar-item.open):hover {
+.sidebar-content.open:hover {
     cursor: pointer;
+    background-color: rgba(255, 255, 255, .1);
 }
 
 .sidebar-item.open .sidebar-content {

@@ -1,23 +1,25 @@
-import {ChangeEvent, FormEvent, useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
-import {Id} from "react-toastify";
-import {closeNotify, notifyError, notifyInfoLoading, notifySuccess} from "../../ui/Notify.tsx";
-import {ApiError} from "../../../types/others.ts";
-import {AuthInput} from "../../ui/AuthInput.tsx";
-import {useCreateCompanyMutation} from "../../../features/company/createCompanyApiSlice.ts";
-import "../../../assets/create-company.css"
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Id } from "react-toastify";
+import { closeNotify, notifyError, notifyInfoLoading, notifySuccess } from "../../ui/Notify";
+import { ApiError } from "../../../types/others";
+import { AuthInput } from "../../ui/AuthInput";
+import "../../../assets/project-create.css";
+import { useCreateProjectMutation } from "../../../features/project/createProjectCompanyApiSlice";
 
-function CreateCompany() {
+export default function CreateProject() {
+
     const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [budget, setBudget] = useState<string>('');
-    
-    const [createCompany] = useCreateCompanyMutation();
+
+    const [createProject] = useCreateProjectMutation();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [toastId, setToastId] = useState<Id | null>(null);
-    
+
     const navigate = useNavigate();
+    const { id } = useParams();
 
     useEffect(() => {
     }, [name, description, budget]);
@@ -39,28 +41,34 @@ function CreateCompany() {
         try {
             setIsLoading(true);
 
-            await createCompany({
+            await createProject({
+                id: id,
                 name: name,
                 description: description,
                 budget: +budget,
             }).unwrap();
 
             setIsLoading(false);
-            notifySuccess("Company has been created");
+            notifySuccess("Project has been created");
 
             setTimeout(() => {
                 navigate("/dashboard");
+                window.location.reload();
             }, 300);
         } catch (err) {
             setIsLoading(false);
             if (err && typeof err === 'object' && 'status' in err) {
                 const error = err as ApiError;
                 if (error.status === 409) {
-                    notifyError("Company with the same name already exists");
-                } else  if (error.status === 400) {
                     notifyError(error.data.title);
-                }
-                 else {
+                } else if (error.status === 400) {
+                    if (error.data.errors) {
+                        notifyError("Wrong budget");
+                    }
+                    else {
+                        notifyError(error.data.title)
+                    }
+                } else {
                     notifyError('Server error');
                 }
             }
@@ -70,10 +78,10 @@ function CreateCompany() {
     const handleNameInput = (e: ChangeEvent<HTMLInputElement>) => setName(e.target.value);
     const handleDescriptionInput = (e: ChangeEvent<HTMLInputElement>) => setDescription(e.target.value);
     const handleBudgetInput = (e: ChangeEvent<HTMLInputElement>) => setBudget(e.target.value);
-    
+
     return (
         <section className="create-company">
-            <h1>Create your company</h1>
+            <h1>Create your project</h1>
             <form onSubmit={handleSubmit}>
                 {AuthInput({
                     type: "text",
@@ -125,5 +133,3 @@ function CreateCompany() {
         </section>
     );
 }
-
-export default CreateCompany;

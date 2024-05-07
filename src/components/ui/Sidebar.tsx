@@ -1,32 +1,14 @@
 import "../../assets/sidebar.css"
-import { useGetCompaniesQuery } from "../../features/company/getAllCompaniesApiSlice.ts";
-import { CompanyResponse } from "../../types/responses";
+import { CompanyResponse } from "../../types/responses.ts";
 import SidebarItem from "./SidebarItem.tsx";
 
 
-export default function Sidebar() {
+export default function Sidebar({ data }: any) {
 
-    const {
-        data: data,
-        isLoading,
-        isSuccess
-    } = useGetCompaniesQuery(undefined);
+    const responses: CompanyResponse[] = data;
 
-
-    let content;
-    if (isLoading) {
-        content = <p>"Loading..."</p>;
-    } else if (isSuccess) {
-        const response: CompanyResponse[] = data;
-
-        content = (
-            <div className="sidebar">
-                <h3>Companies</h3>
-                { response.map(item => <SidebarItem key={item.id} { ...item} />) }
-            </div>
-        );
-    }
-
-
-    return content;
+    return <div className="sidebar">
+        <h3>Companies</h3>
+        {responses.map((item, index) => <SidebarItem key={index} {...item} />)}
+    </div>;
 }
