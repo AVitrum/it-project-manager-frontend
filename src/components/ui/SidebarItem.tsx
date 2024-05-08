@@ -10,7 +10,7 @@ function SidebarItem(item: CompanyResponse) {
         <div className={isOpen ? "sidebar-item open" : "sidebar-item"} >
             <div className="sidebar-title" onClick={() => setIsOpen(!isOpen)}>
                 <span>
-                    {item.picture ? <img src={item.picture} alt="" /> : <img src="user.png" alt="" />}
+                    {item.picture ? <img src={item.picture} alt="" /> : <img src="../../../public/project-default.jpg" alt="" />}
                     <a>{item.name}</a>
                 </span>
                 <i className="bi-chevron-down toggle-btn"></i>
@@ -24,6 +24,7 @@ function SidebarItem(item: CompanyResponse) {
                 <a>Members</a>
             </div>
             <div className={isOpen ? "sidebar-content open" : "sidebar-content"} onClick={isOpen ? () => navigate(`/companyDetails/${item.id}`) : undefined}>
+                <i className="bi bi-gear-wide-connected"></i>
                 <a>Settings</a>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import { apiSlice } from "../../app/api/apiSlice";
 
-export const changePasswordApiSlice = apiSlice.injectEndpoints({
+export const uploadPhotoApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         uploadPhoto: builder.mutation({
             query: data => ({
@@ -14,4 +14,4 @@ export const changePasswordApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useUploadPhotoMutation
-} = changePasswordApiSlice;
+} = uploadPhotoApiSlice;

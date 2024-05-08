@@ -5,14 +5,10 @@
 
 .projects-container {
   display: flex;
-  flex-wrap: nowrap; 
-  width: max-content; 
+  flex-wrap: wrap; 
+  width: 100%; 
 }
 
-.project-container {
-  overflow-x: auto;
-}
-  
 .centered-content {
   flex: 1; 
   margin-top: 120px;
@@ -43,19 +39,40 @@
 .project-title {
   color: white;
   display: flex;
-  align-items: center; 
-  justify-content: space-around; 
-  border: 2px solid rgba(255, 255, 255, .5);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+  align-items: center;
+  justify-content: space-between;
+  max-width: 785px;
+}
+
+.project-title button {
+  margin-left: auto; 
+  margin-top: 20px;
+  width: auto;
+  height: 40px;
+  background: #ffffffb3;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 10px;
+  font-size: 1em;
+  color: #000000;
+  font-weight: 500;
+  padding: 0 15px;
+  align-items: center;
+  transition: background-color 0.5s, color 0.5s;
+}
+
+.project-title button:hover {
+  background-color: #000000;
+    color: white;
 }
 
 .project-title img {
   display: inline-block;
-  height: 30px;
-  width: 35px;
+  height: 40px;
+  width: 45px;
   padding-bottom: 5px;
   overflow: hidden;
-  padding-left: 10px; 
   background-color: transparent;
 }

@@ -35,19 +35,27 @@ export default function Dashboard() {
         content = (
             <div className="dashboard-container">
                 <div className="sidebar-right">
-                    <Sidebar data={response} />
+                    <Sidebar />
                 </div>
                 <div className="centered-content">
-                    <div className="title" style={{ paddingLeft: "30px" }}><h3>Your companies</h3></div>
+                    <div className="title" style={{ paddingRight: "35px" }}><h3>Your companies</h3></div>
                     {response.map((item, index) =>
                         <div className="project-container" key={index}>
                             <div className="project-title">
-                                {item.picture ?
-                                    <img src={item.picture} alt="Company logo" />
-                                    : <img src={projectTemplate.image} alt="Default project image" />
-                                }
-                                <h3>{item.name}</h3>
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    {item.picture ?
+                                        <img src={item.picture} alt="Company logo" />
+                                        : <img src={projectTemplate.image} alt="Default project image" />
+                                    }
+                                    <h3 style={{ marginLeft: '10px' }}>{item.name}</h3>
+                                </div>
+                                <div>
+                                    <button onClick={() => navigate(`/companyMembers/${item.id}`)}><i className="bi bi-people"></i> Members</button>
+                                    <button onClick={() => navigate(`/companyDetails/${item.id}`)}><i className="bi bi-gear-wide-connected"></i> Settings</button>
+                                </div>
                             </div>
+
+
                             <div className="projects-container">
                                 {item.projects.map((project, projectIndex) =>
                                     <ProjectSquare key={projectIndex} data={project} onClick={() => navigate(`/project/${item.id}`)} />

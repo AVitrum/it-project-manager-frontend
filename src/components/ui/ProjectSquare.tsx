@@ -8,7 +8,7 @@ function ProjectSquare({ data, onClick }: { data: ProjectResponse, onClick: any 
     <div className="project-square" onClick={onClick}>
       {data.image ?
         <div className="image-container" style={{ backgroundImage: `url(${data.image})` }}></div> :
-        <div className="image-container" style={{ backgroundImage: `url("3548176.jpg")` }}></div>
+        <div className="image-container" style={{ backgroundImage: `url("project-default1.jpg")` }}></div>
       }
       <h4>{data.name}</h4>
     </div>
