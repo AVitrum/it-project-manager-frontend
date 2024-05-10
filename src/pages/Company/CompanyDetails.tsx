@@ -1,13 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
-import "../assets/company-details.css";
-import { useGetCompanyQuery } from "../features/company/getCompanyByIdApiSlice";
-import { CompanyResponse } from "../types/responses";
+import "../../assets/company-details.css";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { closeNotify, notifyError, notifyInfoLoading } from "../components/ui/Notify";
 import { Id } from "react-toastify";
-import { ApiError } from "../types/others";
-import { useUploadCompanyPictureMutation } from "../features/company/uploadCompanyPictureApiSlice";
-import Sidebar from "../components/ui/Sidebar";
+import { useUploadCompanyPictureMutation } from "../../features/company/uploadCompanyPictureApiSlice";
+import { closeNotify, notifyError, notifyInfoLoading } from "../../components/ui/Notify";
+import { ApiError } from "../../types/others";
+import { useGetCompanyQuery } from "../../features/company/getCompanyByIdApiSlice";
+import { CompanyResponse } from "../../types/responses";
+import Sidebar from "../../components/ui/Sidebar";
 
 function CompanyDetailsPage() {
     const navigate = useNavigate();
@@ -79,35 +79,40 @@ function CompanyDetailsPage() {
         </div>
     } else if (isSuccess) {
         const company: CompanyResponse = data;
-        content = 
-        <div className="details-container">
-            <div className="sidebar-right">
+        content =
+            <div className="details-container">
+                <div>
                     <Sidebar />
                 </div>
-            <div className="centered-content">
-            <div className="company">
-                {company.picture === null ? <></> : <img src={company.picture} alt="" />}
-                <h1>Name: {company.name}</h1>
-                {company.description ?
-                    <p className="company-center-p">{company.description}</p> :
-                    <p className="company-center-p">There is no description</p>
-                }
-                <br />
-                <p>Budget: {company.budget}</p>
+                <div className="centered-content-details">
+                    <div className="company">
+                        {company.picture === null ? <></> : <img className="company-img" src={company.picture} alt="" />}
+                        <h1>Name: {company.name}</h1>
+                        {company.description ?
+                            <p className="company-center-p">{company.description}</p> :
+                            <p className="company-center-p">There is no description</p>
+                        }
+                        <br />
+                        <p>Budget: {company.budget}</p>
 
-                <input
-                    type="file"
-                    ref={fileInputRef}
-                    style={{ display: 'none' }}
-                    onChange={handleFileChange}
-                />
-                <div className="button-container">
-                    <button className="edit-button" onClick={() => navigate(`/editCompany/${company.id}`)}>Change Info</button>
-                    <button className="edit-button" onClick={handleChangePhoto}>Upload Image</button>
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            style={{ display: 'none' }}
+                            onChange={handleFileChange}
+                        />
+                        <div className="button-container">
+                            <button className="edit-button" onClick={() => navigate(`/editCompany/${company.id}`)}>Change Info</button>
+                            <button className="edit-button" onClick={handleChangePhoto}>Upload Image</button>
+                        </div>
+                        <div className="button-container">
+                            <button className="edit-button" onClick={() => navigate(`/companyMembers/${company.id}`)}>Members</button>
+                            <button className="edit-button" onClick={() => navigate(`/addPosition/${company.id}`)}>Create New Position</button>
+                            <button className="edit-button" onClick={() => navigate(`/updatePosition/${company.id}`)}>Update Position</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            </div>
-        </div>
     }
 
     return (

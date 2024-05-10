@@ -35,6 +35,8 @@ h4 {
   left: 0;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
   color: white;
   margin: 0;
   padding: 8px;

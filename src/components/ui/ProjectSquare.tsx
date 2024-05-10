@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "../../assets/projectSquare.css";
+import "../../assets/project-square.css";
 import { ProjectResponse } from "../../types/responses";
 
 function ProjectSquare({ data, onClick }: { data: ProjectResponse, onClick: any }) {

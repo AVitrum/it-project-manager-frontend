@@ -44,16 +44,16 @@
 .profile .confirm-button,
 .profile .edit-button {
     margin-top: 20px;
-    width: 100%;
+    width: 250px;
     height: 60px;
-    background: #000000;
+    background: #e7eaed;
     border: none;
     outline: none;
     border-radius: 6px;
     cursor: pointer;
     margin-right: 10px;
     font-size: 1em;
-    color: #e7eaed;
+    color: #000000;
     font-weight: 500;
     padding: 0 15px;
     align-items: center;
@@ -66,8 +66,8 @@
 }
 
 .profile .edit-button:hover {
-    background-color: #e7eaed;
-    color: #000000;
+    background-color: #000000;
+    color: #e7eaed;
 }
 
 .edit-button:not(:last-child) {

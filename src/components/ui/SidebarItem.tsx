@@ -15,11 +15,7 @@ function SidebarItem(item: CompanyResponse) {
                 </span>
                 <i className="bi-chevron-down toggle-btn"></i>
             </div>
-            <div className={isOpen ? "sidebar-content open" : "sidebar-content"}>
-                <i className="bi bi-kanban"></i>
-                <a>Projects</a>
-            </div>
-            <div className={isOpen ? "sidebar-content open" : "sidebar-content"}>
+            <div className={isOpen ? "sidebar-content open" : "sidebar-content"} onClick={isOpen ? () => navigate(`/companyMembers/${item.id}`) : undefined}>
                 <i className="bi bi-people"></i>
                 <a>Members</a>
             </div>

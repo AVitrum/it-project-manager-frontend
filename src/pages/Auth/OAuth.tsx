@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setCredentials } from "../features/auth/authSlice";
 import { useEffect } from "react";
-import { notifySuccess } from "../components/ui/Notify";
+import { setCredentials } from "../../features/auth/authSlice";
+import { notifySuccess } from "../../components/ui/Notify";
 
 export default function OAuthPage() {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ export default function OAuthPage() {
         notifySuccess("Welcome!")
 
         setTimeout(() => {
-            navigate('/dashboard');
+            navigate('/');
             window.location.reload();
         }, 100);
     }, [dispatch, navigate]);

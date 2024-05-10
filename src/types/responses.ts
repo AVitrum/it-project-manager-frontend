@@ -39,5 +39,23 @@ export type EmployeeResponse = {
     email: string,
     position: string,
     salary: number
-    picture: string | null
+    picture: string | undefined
 };
+
+export type PositionInCompanyResponse = {
+    name: string;
+    priority: number;
+    createProject: boolean;
+    updateProject: boolean;
+    deleteProject: boolean;
+    addUser: boolean;
+    updateUser: boolean;
+    deleteUser: boolean;
+    addBudget: boolean;
+    updateBudget: boolean;
+    createPosition: boolean;
+    updatePosition: boolean;
+    createTask: boolean;
+    updateTask: boolean;
+    deleteTask: boolean;
+}

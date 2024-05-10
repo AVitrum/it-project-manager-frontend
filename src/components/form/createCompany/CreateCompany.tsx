@@ -1,22 +1,22 @@
-import {ChangeEvent, FormEvent, useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
-import {Id} from "react-toastify";
-import {closeNotify, notifyError, notifyInfoLoading, notifySuccess} from "../../ui/Notify.tsx";
-import {ApiError} from "../../../types/others.ts";
-import {AuthInput} from "../../ui/AuthInput.tsx";
-import {useCreateCompanyMutation} from "../../../features/company/createCompanyApiSlice.ts";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Id } from "react-toastify";
+import { closeNotify, notifyError, notifyInfoLoading, notifySuccess } from "../../ui/Notify.tsx";
+import { ApiError } from "../../../types/others.ts";
+import { AuthInput } from "../../ui/AuthInput.tsx";
+import { useCreateCompanyMutation } from "../../../features/company/createCompanyApiSlice.ts";
 import "../../../assets/create-company.css"
 
 function CreateCompany() {
     const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [budget, setBudget] = useState<string>('');
-    
+
     const [createCompany] = useCreateCompanyMutation();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [toastId, setToastId] = useState<Id | null>(null);
-    
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -57,10 +57,10 @@ function CreateCompany() {
                 const error = err as ApiError;
                 if (error.status === 409) {
                     notifyError("Company with the same name already exists");
-                } else  if (error.status === 400) {
+                } else if (error.status === 400) {
                     notifyError(error.data.title);
                 }
-                 else {
+                else {
                     notifyError('Server error');
                 }
             }
@@ -70,7 +70,7 @@ function CreateCompany() {
     const handleNameInput = (e: ChangeEvent<HTMLInputElement>) => setName(e.target.value);
     const handleDescriptionInput = (e: ChangeEvent<HTMLInputElement>) => setDescription(e.target.value);
     const handleBudgetInput = (e: ChangeEvent<HTMLInputElement>) => setBudget(e.target.value);
-    
+
     return (
         <section className="create-company">
             <h1>Create your company</h1>

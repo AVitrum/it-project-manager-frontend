@@ -1,17 +1,17 @@
-import { useGetProfileQuery } from "../features/user/profileApiSlice.ts";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, } from "react-redux";
-import { logOut } from "../features/auth/authSlice.ts";
-import { ProfileResponse } from "../types/responses.ts";
-import "../assets/profile.css"
+import "../../assets/profile.css"
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { useUploadPhotoMutation } from "../features/user/uploadPhotoApiSlice.ts";
-import { closeNotify, notifyError, notifyInfoLoading } from "../components/ui/Notify.tsx";
 import { Id } from "react-toastify";
-import { ApiError } from "../types/others.ts";
-import { AuthInput } from "../components/ui/AuthInput.tsx";
 import { PersonOutline, PhonePortraitOutline } from "react-ionicons";
-import { useUpdateInfoMutation } from "../features/user/updateUserApiSlice.ts";
+import { useUploadPhotoMutation } from "../../features/user/uploadPhotoApiSlice";
+import { useUpdateInfoMutation } from "../../features/user/updateUserApiSlice";
+import { closeNotify, notifyError, notifyInfoLoading } from "../../components/ui/Notify";
+import { logOut } from "../../features/auth/authSlice";
+import { ApiError } from "../../types/others";
+import { useGetProfileQuery } from "../../features/user/profileApiSlice";
+import { ProfileResponse } from "../../types/responses";
+import { AuthInput } from "../../components/ui/AuthInput";
 
 
 

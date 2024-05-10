@@ -51,7 +51,7 @@ export default function DropDownMenu() {
         <div>
             <div className='menu-container' ref={menuRef}>
                 <div className='menu-trigger' onClick={() => { setOpen(!open) }}>
-                    { img ? <img src={img}></img> : <img src='user.png'></img>}
+                    { img ? <img src={img}></img> : <img src='../../../public/user.png'></img>}
                 </div>
 
                 <div className={`dropdown-menu ${open ? 'active' : 'inactive'}`} >

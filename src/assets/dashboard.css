@@ -3,21 +3,31 @@
   position: relative;
 }
 
-.projects-container {
+.centered-content {
+  margin-top: 120px;
+  padding-left: 200px;
+  margin-right: 50px;
   display: flex;
-  flex-wrap: wrap; 
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.company-container {
+  display: flex;
+  position: relative;
+  flex-direction: column;
   width: 100%; 
 }
 
-.centered-content {
-  flex: 1; 
-  margin-top: 120px;
-  padding-left: 200px; 
-  overflow-y: auto; 
-  height: 800px;
-  width: 1080px; 
-  padding-right: 5px;
+.projects-container {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
 }
+
 
 .centered-content::-webkit-scrollbar {
   width: 0px; 
@@ -32,29 +42,23 @@
   background-color: transparent;
 }
 
-.title {
-  color: white;
-}
-
-.project-title {
+.company-title {
   color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 785px;
+  width: 100%; 
 }
 
-.project-title button {
-  margin-left: auto; 
-  margin-top: 20px;
-  width: auto;
+.company-title button {
+  flex-grow: 1; 
+  margin-left: 10px; 
   height: 40px;
   background: #ffffffb3;
   border: none;
   outline: none;
   border-radius: 6px;
   cursor: pointer;
-  margin-right: 10px;
   font-size: 1em;
   color: #000000;
   font-weight: 500;
@@ -63,12 +67,12 @@
   transition: background-color 0.5s, color 0.5s;
 }
 
-.project-title button:hover {
+.company-title button:hover {
   background-color: #000000;
-    color: white;
+  color: white;
 }
 
-.project-title img {
+.company-title img {
   display: inline-block;
   height: 40px;
   width: 45px;
