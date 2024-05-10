@@ -9,7 +9,7 @@ export type Input = {
     autoComplete: string;
     required: boolean;
     label: string;
-    Icon: React.ComponentType<any>;
+    Icon: React.ComponentType<any> | null;
     iconColor: string;
     iconHeight: string;
     iconWidth: string;

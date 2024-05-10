@@ -25,13 +25,9 @@ const authSlice = createSlice({
         },
 
         setCredentials: function (state, action) {
-            const { username, image, accessToken, refreshToken } = action.payload;
-            state.username = username;
+            const { accessToken, refreshToken } = action.payload;
             state.token = accessToken;
-            state.image = image;
             state.refreshToken = refreshToken;
-            localStorage.setItem('username', username);
-            localStorage.setItem('image', image);
             localStorage.setItem('token', accessToken);
             localStorage.setItem('refreshToken', refreshToken);
         },

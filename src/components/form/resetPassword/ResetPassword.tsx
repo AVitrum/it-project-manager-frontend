@@ -5,7 +5,7 @@ import { closeNotify, notifyError, notifyInfoLoading, notifySuccess } from "../.
 import { ApiError } from "../../../types/others";
 import { AuthInput } from "../../ui/AuthInput";
 import { KeyOutline, LockClosedOutline } from "react-ionicons";
-import { useResetPasswordMutation } from "../../../features/user/resetPassword";
+import { useResetPasswordMutation } from "../../../features/user/resetPasswordApiSlice.ts";
 import "../../../assets/password.css"
 
 export default function ResetPassword() {

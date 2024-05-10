@@ -8,7 +8,7 @@ function RequireAuth() {
 
     return (
         token
-            ? <Outlet />
+            ? <div className="test"><Outlet /></div> 
             : <Navigate to="/welcome" state={{ from: location }} replace />
     );
 };

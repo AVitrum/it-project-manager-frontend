@@ -6,13 +6,25 @@
     font-family: 'Poppins', sans-serif;
 }
 
+.test {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow: auto;  
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+}
+
+.test::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
 body {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    height: 100%;
+    width: 100%;
     background: url('test.jpg') no-repeat;
-    background-size: cover;
+    background-size: auto;
     background-position: center;
 }
 
@@ -42,6 +54,10 @@ header {
     text-decoration: none;
     font-weight: 500;
     margin-left: 40px;
+}
+
+.navigation a {
+    cursor: pointer;
 }
 
 .navigation .btnLogin-popup {
@@ -81,8 +97,14 @@ header {
     color: #fff;
 }
 
+.auth-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .wrapper {
-    position: relative;
     width: 400px;
     height: 100%;
     background: transparent;
