@@ -5,7 +5,7 @@
 
 .centered-content-details { 
     margin-top: 150px;
-    padding-left: 345px;
+    padding-left: 365px;
     margin-right: 50px;
     display: flex;
     position: relative;
@@ -27,7 +27,7 @@
     position: relative;
     flex-direction: column;
     padding: 20px;
-    width: 500px;  
+    width: 600px;  
     background: transparent;
     border: 2px solid rgba(255, 255, 255, .5);
     border-radius: 20px;
