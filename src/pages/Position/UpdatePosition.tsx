@@ -34,7 +34,6 @@ const permissionsList: Permission[] = [
 ];
 
 function UpdatePositionPage() {
-    // State
     const [priority, setPriority] = useState<string>('');
     const [permissions, setPermissions] = useState<Permission[] | undefined>(permissionsList);
     const [position, setPosition] = useState<string | null>(null);
@@ -42,11 +41,9 @@ function UpdatePositionPage() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [toastId, setToastId] = useState<Id | null>(null);
 
-    // Hooks
     const { id } = useParams<string>();
     const navigate = useNavigate();
 
-    // Queries
     const [updatePosition] = useUpdatePositionMutation();
     const {
         data: positionsData,
@@ -55,7 +52,6 @@ function UpdatePositionPage() {
     } = useGetPositionsQuery({ id: id });
     const positions: PositionInCompanyResponse[] = positionsData || [];
 
-    // Functions
     function convertPermissions(obj: PositionInCompanyResponse): Permission[] {
         return [
             { row: "Create Project", name: "createProject", value: obj.createProject },
@@ -74,7 +70,6 @@ function UpdatePositionPage() {
         ];
     }
 
-    //Components
     const PositionSelect = () => {
         let selectorContent;
         if (isLoadingPositions) {
@@ -97,7 +92,6 @@ function UpdatePositionPage() {
         return selectorContent;
     };
 
-    // Effects
     useEffect(() => {
         if (isSuccessPositions && !loaded) {
             setPosition(positions[0].name);
@@ -115,7 +109,6 @@ function UpdatePositionPage() {
         }
     }, [isLoading]);
 
-    // Event Handlers
     const handleBackClick = () => {
         navigate(`/companyDetails/${id}`);
     };
@@ -164,7 +157,6 @@ function UpdatePositionPage() {
         setPermissions(updatedPermissions);
     };
 
-    // JSX Content
     let content;
 
     if (isLoading) {

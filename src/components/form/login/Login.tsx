@@ -89,7 +89,7 @@ const Login = () => {
             setIsLoading(false);
 
             notifySuccess("Welcome!");
-            navigate('/');
+            navigate('/dashboard');
         } catch (err) {
             setIsLoading(false);
 

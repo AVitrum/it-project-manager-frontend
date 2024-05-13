@@ -18,6 +18,8 @@ import AuthPage from "./pages/Auth/Auth.tsx";
 import ProfilePage from "./pages/Auth/Profile.tsx";
 import ChangePasswordPage from "./pages/Auth/ChangePassword.tsx";
 import UpdatePositionPage from "./pages/Position/UpdatePosition.tsx";
+import TaskPage from "./pages/Task/Task.tsx";
+import CreateTaskPage from "./pages/Task/CreateTask.tsx";
 
 export default function AppRoutes() {
   return (
@@ -39,6 +41,8 @@ export default function AppRoutes() {
           <Route path="companyMembers/:id/info/:employeeId" element={<MembersInfoPage />} />
           <Route path="createCompany" element={<CreateCompanyPage />} />
           <Route path="addPosition/:id" element={<CreatePositionPage />} />
+          <Route path=":id/tasks" element={<TaskPage />} />
+          <Route path=":id/task/create" element={<CreateTaskPage />} />
           <Route path="updatePosition/:id" element={<UpdatePositionPage />} />
           <Route path="project/:id" element={<ProjectPage />} />
           <Route path="createProject/:id" element={<CreateProjectPage />} />

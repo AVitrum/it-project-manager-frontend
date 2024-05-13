@@ -1,10 +1,11 @@
 export type ProfileResponse = {
-    id: number,
-    username: string,
-    email: string,
-    phoneNumber: string,
-    creationDate: string,
-    imageUrl: string | null
+    id: number;
+    username: string;
+    email: string;
+    phoneNumber: string;
+    creationDate: string;
+    imageUrl: string | null;
+    averageSalary: number;
 };
 
 export type AuthResponse = {
@@ -22,6 +23,10 @@ export type CompanyResponse = {
     picture: string | undefined;
     employees: EmployeeResponse[];
     projects: ProjectResponse[];
+    maxSalary: number;
+    minSalary: number;
+    totalCosts: number;
+    averageSalary: number;
 };
 
 export type ProjectResponse = {
@@ -31,6 +36,15 @@ export type ProjectResponse = {
     budget: number;
     image: string | undefined
     performers: EmployeeResponse[];
+    assignments: AssignmentResponse[];
+};
+
+export type AssignmentResponse = {
+    id: number;
+    theme: string;
+    description: string;
+    createdAt: string;
+    deadline: string;
 };
 
 export type EmployeeResponse = {

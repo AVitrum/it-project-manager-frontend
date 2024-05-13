@@ -85,7 +85,7 @@ function CompanyMembersPage() {
     } = useGetCompanyQuery({ id: id });
 
     if (isLoading) {
-        content = <div className="company-center">
+        content = <div className="centered-content-details">
             <div className="company">
                 <h1>Loading...</h1>
             </div>
@@ -135,6 +135,8 @@ function CompanyMembersPage() {
                             iconWidth: "20px"
                         })}
                         <button className="add-user-button" onClick={() => handleAddUser()}><i className="bi bi-plus-lg"></i> Add User</button>
+                        <br></br>
+                        <button className="add-user-button" onClick={() => navigate(`/companyDetails/${id}`)}>Back</button>
                     </div>
                 </div>
             </div>

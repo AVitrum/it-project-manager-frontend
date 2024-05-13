@@ -7,8 +7,8 @@ function SidebarItem(item: CompanyResponse) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     return (
-        <div className={isOpen ? "sidebar-item open" : "sidebar-item"} >
-            <div className="sidebar-title" onClick={() => setIsOpen(!isOpen)}>
+        <div onClick={() => setIsOpen(!isOpen)} className={isOpen ? "sidebar-item open" : "sidebar-item"}>
+            <div className="sidebar-title">
                 <span>
                     {item.picture ? <img src={item.picture} alt="" /> : <img src="../../../public/project-default.jpg" alt="" />}
                     <a>{item.name}</a>

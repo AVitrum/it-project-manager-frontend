@@ -72,7 +72,7 @@ function CompanyDetailsPage() {
     } = useGetCompanyQuery({ id: id });
 
     if (isLoading) {
-        content = <div className="company-center">
+        content = <div className="centered-content-details">
             <div className="company">
                 <h1>Loading...</h1>
             </div>
@@ -94,7 +94,10 @@ function CompanyDetailsPage() {
                         }
                         <br />
                         <p>Budget: {company.budget}</p>
-
+                        <p>Total Costs {company.totalCosts}</p>
+                        <p>Average Salary {company.averageSalary}</p>
+                        <p>Max Salary {company.maxSalary}</p>
+                        <p>Min Salary {company.minSalary}</p>
                         <input
                             type="file"
                             ref={fileInputRef}

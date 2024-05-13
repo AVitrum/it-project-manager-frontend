@@ -77,8 +77,10 @@ function CreatePositionPage() {
 
             setIsLoading(false);
             notifySuccess("Position has been created");
-
-            navigate("/dashboard");
+            setTimeout(() => {
+                navigate(`/companyDetails/${id}`);
+                window.location.reload();
+            }, 500);
         } catch (err) {
             setIsLoading(false);
             if (err && typeof err === 'object' && 'status' in err) {

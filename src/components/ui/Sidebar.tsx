@@ -10,7 +10,7 @@ export default function Sidebar() {
     const {
         data: data,
         isSuccess
-    } = useGetCompaniesQuery(undefined);
+    } = useGetCompaniesQuery({order: "asc"});
 
     let content;
 

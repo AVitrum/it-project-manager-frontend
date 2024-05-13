@@ -4,9 +4,10 @@
 }
 
 .centered-content-details { 
-    margin-top: 150px;
-    padding-left: 365px;
+    margin-top: 140px;
+    padding-left: 15%;
     margin-right: 50px;
+    margin-left: 15%;
     display: flex;
     position: relative;
     flex-direction: column;
@@ -14,20 +15,19 @@
     width: auto;
 }
   
-
 .company-center {
     display: flex;
     position: relative;
     color: white;
 }
 
-
 .company {
     display: flex;
     position: relative;
     flex-direction: column;
     padding: 20px;
-    width: 600px;  
+    width: auto;
+    min-width: 720px;  
     background: transparent;
     border: 2px solid rgba(255, 255, 255, .5);
     border-radius: 20px;

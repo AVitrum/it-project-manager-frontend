@@ -200,6 +200,7 @@ export default function ProfilePage() {
                 }
                 {profile.phoneNumber && !isChangeProfilePressed ? <p>Phone: {profile.phoneNumber}</p> : <></>}
                 <p>Email: {profile.email}</p>
+                <p>Average Salary {profile.averageSalary}</p>
                 <p>CreatedAt: {formattedDate}</p>
                 <input
                     type="file"
