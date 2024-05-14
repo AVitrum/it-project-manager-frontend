@@ -4,7 +4,7 @@
 }
 
 .project-centered-content {
-    margin-top: 100px;
+    margin-top: 150px;
     display: flex;
     position: relative;
     flex-direction: column;
@@ -22,38 +22,6 @@
     background: transparent;
     width: auto;
     min-width: 400px;
-    border: 2px solid rgba(255, 255, 255, .5);
-    border-radius: 50px;
-}
-
-.task-content {
-    border: 2px solid rgba(255, 255, 255, .5);
-    border-radius: 8px;
-    background: transparent;
-    position: relative;
-    margin: 10px;
-    height: auto;
-    width: auto;
-    min-width: 190px;
-    font-size: small;
-    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
-}
-
-.task-content p {
-    padding: 10px;
-}
-
-.task-content h1 {
-    position: relative;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    font-size: medium;
-    color: white;
-    margin: 0;
-    padding: 8px;
-    box-sizing: border-box;
 }
 
 .project-content .edit-button {
@@ -93,6 +61,9 @@
 .project-content h1 {
     text-align: center;
     color: #e7eaed;
+    width: 500px;
+    border-radius: 50px;
+    border: 2px solid rgba(255, 255, 255, .5);
     margin-bottom: 20px;
 }
 

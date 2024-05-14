@@ -34,7 +34,8 @@ export type ProjectResponse = {
     name: string;
     description: string;
     budget: number;
-    image: string | undefined
+    image: string | undefined;
+    companyId: number;
     performers: EmployeeResponse[];
     assignments: AssignmentResponse[];
 };
@@ -45,6 +46,7 @@ export type AssignmentResponse = {
     description: string;
     createdAt: string;
     deadline: string;
+    budget: number;
 };
 
 export type EmployeeResponse = {

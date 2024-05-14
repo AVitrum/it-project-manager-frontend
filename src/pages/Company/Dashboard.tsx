@@ -80,7 +80,7 @@ export default function Dashboard() {
                                 <ProjectSquare
                                     key={projectIndex}
                                     data={project}
-                                    onClick={() => navigate(`/project/${project.id}`)}
+                                    onClick={() => navigate(`/${project.id}/tasks`)}
                                 />
                             ))}
                             <ProjectSquareCreate id={company.id} />
