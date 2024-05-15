@@ -103,6 +103,10 @@ function ProjectPage() {
                     />
                     <div className="button-container">
                         <button className="edit-button" onClick={() => navigate(`/${id}/tasks`)}>Tasks</button>
+                        <button className="edit-button" onClick={() => navigate(`/project/${id}/members`)}>Performers</button>
+                    </div>
+                    <div className="button-container">
+                        <button className="edit-button" onClick={() => navigate(`/project/${id}/update`)}>Update Info</button>
                         <button className="edit-button" onClick={handleChangePhoto}>Upload Image</button>
                         <button className="edit-button" onClick={() => navigate(`/dashboard`)}>Back</button>
                     </div>

@@ -5,20 +5,45 @@ import "../../assets/create-company.css";
 import { closeNotify, notifyError, notifyInfoLoading, notifySuccess } from "../../components/ui/Notify";
 import { ApiError } from "../../types/others";
 import { AuthInput } from "../../components/ui/AuthInput";
-import { useCreateTaskMutation } from "../../features/task/createTaskApiSlice";
+import { useGetTaskQuery } from "../../features/task/getTaskApiSlice";
+import { AssignmentResponse } from "../../types/responses";
+import { useUpdateTaskMutation } from "../../features/task/updateTaskApiSlice";
 
-function CreateTaskPage() {
-    const { id } = useParams<string>();
+function UpdateTaskPage() {
+    const { id, taskId } = useParams<string>();
     const [theme, setTheme] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [budget, setBudget] = useState<string>('');
     const [deadlineDate, setDeadlineDate] = useState<string>('');
     const [deadlineTime, setDeadlineTime] = useState<string>('');
+    const [loaded, setLoaded] = useState<boolean>(false);
 
-    const [createTask] = useCreateTaskMutation();
+    const [updateTask] = useUpdateTaskMutation();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [toastId, setToastId] = useState<Id | null>(null);
+
+    const {
+        data: data,
+        isSuccess
+    } = useGetTaskQuery({ id: taskId });
+
+
+    useEffect(() => {
+        if (isSuccess && !loaded) {
+            const task: AssignmentResponse = data;
+            setTheme(task.theme);
+            setDescription(task.description);
+            setBudget(task.budget.toString());
+
+            const deadlineDateObj = new Date(task.deadline);
+            const deadlineTimeString = deadlineDateObj.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' });
+            const formattedDeadlineDate = deadlineDateObj.toISOString().split('T')[0];
+            setDeadlineDate(formattedDeadlineDate);
+            setDeadlineTime(deadlineTimeString);
+            setLoaded(true);
+        }
+    }, [isSuccess, data, loaded]);
 
     const navigate = useNavigate();
 
@@ -41,8 +66,8 @@ function CreateTaskPage() {
         e.preventDefault();
         try {
             setIsLoading(true);
-            await createTask({
-                id: id,
+            await updateTask({
+                id: taskId,
                 theme: theme,
                 description: description,
                 budget: +budget,
@@ -50,7 +75,7 @@ function CreateTaskPage() {
             }).unwrap();
 
             setIsLoading(false);
-            notifySuccess("Task has been created");
+            notifySuccess("Task has been updated");
 
             setTimeout(() => {
                 navigate(`/${id}/tasks`);
@@ -78,7 +103,7 @@ function CreateTaskPage() {
 
     return (
         <section className="create-company">
-            <h1>Create Task</h1>
+            <h1>Update Task</h1>
             <form onSubmit={handleSubmit}>
                 {AuthInput({
                     type: "text",
@@ -151,4 +176,4 @@ function CreateTaskPage() {
     );
 }
 
-export default CreateTaskPage;
+export default UpdateTaskPage;

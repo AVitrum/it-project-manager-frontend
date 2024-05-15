@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../assets/project.css";
 import "../../assets/tasks.css";
 import { AssignmentResponse } from "../../types/responses";
 import { useGetTasksQuery } from "../../features/task/getAllTasksByProjectIdApiSlice";
 import Sidebar from "../../components/ui/Sidebar";
+import TaskModal from "../../components/ui/TaskModal";
 
 function TasksPage() {
     const { id } = useParams<string>();
@@ -28,6 +30,8 @@ function TasksPage() {
         return date.toLocaleDateString('uk-UA', options);
     }
 
+    const [taskDetails, setTaskDetails] = useState<AssignmentResponse | null>(null);
+
     let content;
 
     if (isLoading) {
@@ -48,58 +52,14 @@ function TasksPage() {
                     <div className="task-row">
                         <div className="task-column">
                             <h3>Not Assigned</h3>
-                            {tasks.slice(1, 2).map((task) => (
-                                <div className="task-content">
-                                    <h1>{task.theme}</h1>
-                                    {/* <p>Budget: {task.budget}</p> */}
-                                    {/* <p>CreatedAt: {convertDate(task.createdAt)}</p> */}
-                                    <p>Deadline: {convertDate(task.createdAt)}</p>
-                                    <div className="button-container-task">
-                                        <button><i className="bi bi-info-circle"></i> Details</button>
-                                        <button><i className="bi bi-calendar-date"></i></button>
-                                        <button><i className="bi bi-sliders"></i></button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="task-column">
-                            <h3>Assigned</h3>
                             {tasks.map((task) => (
                                 <div className="task-content">
                                     <h1>{task.theme}</h1>
-                                    <p>Deadline: {convertDate(task.createdAt)}</p>
+                                    <p>Deadline: {convertDate(task.deadline)}</p>
                                     <div className="button-container-task">
-                                        <button><i className="bi bi-info-circle"></i> Details</button>
+                                        <button onClick={() => setTaskDetails(task)}><i className="bi bi-info-circle"></i> Details</button>
                                         <button><i className="bi bi-calendar-date"></i></button>
-                                        <button><i className="bi bi-sliders"></i></button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="task-column">
-                            <h3>In Review</h3>
-                            {tasks.map((task) => (
-                                <div className="task-content">
-                                    <h1>{task.theme}</h1>
-                                    <p>Deadline: {convertDate(task.createdAt)}</p>
-                                    <div className="button-container-task">
-                                        <button><i className="bi bi-info-circle"></i> Details</button>
-                                        <button><i className="bi bi-calendar-date"></i></button>
-                                        <button><i className="bi bi-sliders"></i></button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="task-column">
-                            <h3>Completed</h3>
-                            {tasks.slice(1, 3).map((task) => (
-                                <div className="task-content">
-                                    <h1>{task.theme}</h1>
-                                    <p>Deadline: {convertDate(task.createdAt)}</p>
-                                    <div className="button-container-task">
-                                        <button><i className="bi bi-info-circle"></i> Details</button>
-                                        <button><i className="bi bi-calendar-date"></i></button>
-                                        <button><i className="bi bi-sliders"></i></button>
+                                        <button onClick={() => navigate(`/${id}/task/${task.id}/update`)}><i className="bi bi-sliders"></i></button>
                                     </div>
                                 </div>
                             ))}
@@ -115,8 +75,12 @@ function TasksPage() {
         </div>
     }
 
-    return content;
-
+    return (
+        <>
+            {content}
+            {taskDetails && <TaskModal task={taskDetails} onClose={() => setTaskDetails(null)} />}
+        </>
+    );
 }
 
-export default TasksPage
+export default TasksPage;

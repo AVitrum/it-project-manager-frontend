@@ -1,28 +1,46 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Id } from "react-toastify";
-import "../../assets/create-company.css";
+import "../../assets/create-company.css"
 import { closeNotify, notifyError, notifyInfoLoading, notifySuccess } from "../../components/ui/Notify";
 import { ApiError } from "../../types/others";
 import { AuthInput } from "../../components/ui/AuthInput";
-import { useCreateTaskMutation } from "../../features/task/createTaskApiSlice";
+import { useGetProjectQuery } from "../../features/project/getProjectByIdApiSlice";
+import { ProjectResponse } from "../../types/responses";
+import { useUpdateProjectMutation } from "../../features/project/updateProjectApiSlice";
 
-function CreateTaskPage() {
+export default function UpdateProjectPage() {
     const { id } = useParams<string>();
-    const [theme, setTheme] = useState<string>('');
+    const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [budget, setBudget] = useState<string>('');
-    const [deadlineDate, setDeadlineDate] = useState<string>('');
-    const [deadlineTime, setDeadlineTime] = useState<string>('');
+    const [loaded, setLoaded] = useState<boolean>(false);
+    const navigate = useNavigate();
 
-    const [createTask] = useCreateTaskMutation();
+    const {
+        data: data,
+        isLoading: isProjectLoading,
+        isSuccess
+    } = useGetProjectQuery({ id: id });
+
+    const [updateProject] = useUpdateProjectMutation();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [toastId, setToastId] = useState<Id | null>(null);
 
-    const navigate = useNavigate();
 
-    useEffect(() => { }, [theme, description, budget, deadlineDate, deadlineTime]);
+    useEffect(() => {
+    }, [name, description, budget]);
+
+    useEffect(() => {
+        if (isSuccess && !loaded) {
+            const project: ProjectResponse = data;
+            setName(project.name);
+            setDescription(project.description);
+            setBudget(project.budget.toString());
+            setLoaded(true);
+        }
+    }, [isSuccess, data, loaded]);
 
     useEffect(() => {
         if (isLoading) {
@@ -33,62 +51,71 @@ function CreateTaskPage() {
     }, [isLoading]);
 
     function handleBackClick() {
-        navigate(`/${id}/tasks`);
-        window.location.reload();
+        navigate(`/project/${id}`);
     }
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         try {
             setIsLoading(true);
-            await createTask({
+
+            await updateProject({
                 id: id,
-                theme: theme,
+                name: name,
                 description: description,
                 budget: +budget,
-                deadline: `${deadlineDate}T${deadlineTime}:00.000Z`,
             }).unwrap();
 
             setIsLoading(false);
-            notifySuccess("Task has been created");
+            notifySuccess("Project has been updated");
 
             setTimeout(() => {
-                navigate(`/${id}/tasks`);
+                navigate(`/project/${id}`);
                 window.location.reload();
             }, 300);
         } catch (err) {
             setIsLoading(false);
             if (err && typeof err === 'object' && 'status' in err) {
                 const error = err as ApiError;
-                if (error.status === 400) {
+                if (error.status === 409) {
                     notifyError(error.data.title);
-                }
-                else {
+                } else if (error.status === 400) {
+                    if (error.data.errors) {
+                        notifyError("Wrong budget");
+                    }
+                    else {
+                        notifyError(error.data.title)
+                    }
+                } else {
                     notifyError('Server error');
                 }
             }
         }
     }
 
-    const handleThemeInput = (e: ChangeEvent<HTMLInputElement>) => setTheme(e.target.value);
+    const handleNameInput = (e: ChangeEvent<HTMLInputElement>) => setName(e.target.value);
     const handleDescriptionInput = (e: ChangeEvent<HTMLInputElement>) => setDescription(e.target.value);
     const handleBudgetInput = (e: ChangeEvent<HTMLInputElement>) => setBudget(e.target.value);
-    const handleDeadlineDateChange = (e: ChangeEvent<HTMLInputElement>) => setDeadlineDate(e.target.value);
-    const handleDeadlineTimeChange = (e: ChangeEvent<HTMLInputElement>) => setDeadlineTime(e.target.value);
 
-    return (
+    let content;
+
+    if (isProjectLoading) {
         <section className="create-company">
-            <h1>Create Task</h1>
+            <h1>Loading...</h1>
+        </section>
+    } else if (isSuccess) {
+        content = <section className="create-company">
+            <h1>Create your project</h1>
             <form onSubmit={handleSubmit}>
                 {AuthInput({
                     type: "text",
-                    id: "theme",
+                    id: "name",
                     ref: null,
-                    value: theme,
-                    onChange: handleThemeInput,
+                    value: name,
+                    onChange: handleNameInput,
                     autoComplete: "off",
                     required: true,
-                    label: "Theme",
+                    label: "Name",
                     Icon: null,
                     iconColor: "#00000",
                     iconHeight: "20px",
@@ -122,33 +149,13 @@ function CreateTaskPage() {
                     iconHeight: "20px",
                     iconWidth: "20px"
                 })}
-                <div className="date-picker">
-                    <label htmlFor="deadline-date">Deadline Date:</label>
-                    <input
-                        type="date"
-                        id="deadline-date"
-                        value={deadlineDate}
-                        onChange={handleDeadlineDateChange}
-                        required
-                    />
-                    <label htmlFor="deadline-time">Deadline Time:</label>
-                    <input
-                        type="time"
-                        id="deadline-time"
-                        value={deadlineTime}
-                        onChange={handleDeadlineTimeChange}
-                        required
-                    />
-                </div>
-                <div style={{ padding: "10px" }}>
-                </div>
                 <div className="button-container">
                     <button type='submit' className="submit-btn">Confirm</button>
-                    <button type='button' onClick={handleBackClick} className="submit-btn">Back</button>
+                    <button onClick={handleBackClick} className="submit-btn">Back</button>
                 </div>
             </form>
         </section>
-    );
-}
+    }
 
-export default CreateTaskPage;
+    return content;
+}

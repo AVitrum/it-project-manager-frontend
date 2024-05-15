@@ -47,6 +47,7 @@ export type AssignmentResponse = {
     createdAt: string;
     deadline: string;
     budget: number;
+    performers: EmployeeResponse[];
 };
 
 export type EmployeeResponse = {
