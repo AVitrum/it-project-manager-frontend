@@ -44,10 +44,25 @@ export type AssignmentResponse = {
     id: number;
     theme: string;
     description: string;
+    type: string;
+    budget: number;
     createdAt: string;
     deadline: string;
-    budget: number;
+    updatedAt: string;
     performers: EmployeeResponse[];
+    comments: CommentResponse[];
+    histories: HistoryResponse[];
+};
+
+export type CommentResponse = {
+    id: number;
+    message: string;
+    user: EmployeeResponse;
+};
+
+export type HistoryResponse = {
+    updatedAt: string;
+    change: string;
 };
 
 export type EmployeeResponse = {

@@ -7,6 +7,19 @@
     align-items: center;
     width: 100%;
     color: white;
+    overflow: auto;
+}
+
+.tasks-centered-content::-webkit-scrollbar {
+    width: 0px; 
+}
+  
+.tasks-centered-content::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+}
+  
+.tasks-centered-content::-webkit-scrollbar-track {
+    background-color: transparent;
 }
 
 .tasks-content {
@@ -28,6 +41,7 @@
     display: flex;
     min-width: 200px;
     min-height: 50px;
+    max-width: 250px;
     flex-direction: column;
     flex-grow: 1; 
     margin: 30px;

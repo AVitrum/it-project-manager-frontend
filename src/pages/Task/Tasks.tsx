@@ -17,6 +17,7 @@ function TasksPage() {
         isSuccess
     } = useGetTasksQuery({ id: id });
 
+
     function convertDate(dateToConvert: string) {
         const date = new Date(dateToConvert);
         const options: Intl.DateTimeFormatOptions = {
@@ -44,7 +45,6 @@ function TasksPage() {
         </div>
     } else if (isSuccess) {
         const tasks: AssignmentResponse[] = data;
-
         content = <div className="main-project-container">
             <div><Sidebar /></div>
             <div className="tasks-centered-content">
@@ -53,15 +53,53 @@ function TasksPage() {
                         <div className="task-column">
                             <h3>Not Assigned</h3>
                             {tasks.map((task) => (
-                                <div className="task-content">
+                                task.type == "ASSIGNED" ? <div className="task-content">
                                     <h1>{task.theme}</h1>
                                     <p>Deadline: {convertDate(task.deadline)}</p>
                                     <div className="button-container-task">
                                         <button onClick={() => setTaskDetails(task)}><i className="bi bi-info-circle"></i> Details</button>
-                                        <button><i className="bi bi-calendar-date"></i></button>
                                         <button onClick={() => navigate(`/${id}/task/${task.id}/update`)}><i className="bi bi-sliders"></i></button>
                                     </div>
-                                </div>
+                                </div> : <></>
+                            ))}
+                        </div>
+                        <div className="task-column">
+                            <h3>In Review</h3>
+                            {tasks.map((task) => (
+                                task.type == "IN_REVIEW" ? <div className="task-content">
+                                    <h1>{task.theme}</h1>
+                                    <p>Deadline: {convertDate(task.deadline)}</p>
+                                    <div className="button-container-task">
+                                        <button onClick={() => setTaskDetails(task)}><i className="bi bi-info-circle"></i> Details</button>
+                                        <button onClick={() => navigate(`/${id}/task/${task.id}/update`)}><i className="bi bi-sliders"></i></button>
+                                    </div>
+                                </div> : <></>
+                            ))}
+                        </div>
+                        <div className="task-column">
+                            <h3>Completed</h3>
+                            {tasks.map((task) => (
+                                task.type == "COMPLETED" ? <div className="task-content">
+                                    <h1>{task.theme}</h1>
+                                    <p>Deadline: {convertDate(task.deadline)}</p>
+                                    <div className="button-container-task">
+                                        <button onClick={() => setTaskDetails(task)}><i className="bi bi-info-circle"></i> Details</button>
+                                        <button onClick={() => navigate(`/${id}/task/${task.id}/update`)}><i className="bi bi-sliders"></i></button>
+                                    </div>
+                                </div> : <></>
+                            ))}
+                        </div>
+                        <div className="task-column">
+                            <h3>Overdue</h3>
+                            {tasks.map((task) => (
+                                task.type == "OVERDUE" ? <div className="task-content">
+                                    <h1>{task.theme}</h1>
+                                    <p>Deadline: {convertDate(task.deadline)}</p>
+                                    <div className="button-container-task">
+                                        <button onClick={() => setTaskDetails(task)}><i className="bi bi-info-circle"></i> Details</button>
+                                        <button onClick={() => navigate(`/${id}/task/${task.id}/update`)}><i className="bi bi-sliders"></i></button>
+                                    </div>
+                                </div> : <></>
                             ))}
                         </div>
                     </div>
