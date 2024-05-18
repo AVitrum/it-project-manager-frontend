@@ -48,48 +48,54 @@ export default function Dashboard() {
     const companies: CompanyResponse[] = data;
 
     let content =
-    <div className="dashboard-container">
-        <Sidebar />
-        <div className="centered-content">
-            <div className="main-container">
-                <div className="order-selector">
-                    <OrderSelect />
+        <div className="dashboard-container">
+            {companies.length > 0
+                ? <Sidebar />
+                : <></>
+            }
+            <div className="centered-content">
+                <div className="main-container">
+                    {companies.length > 0
+                        ? <div className="order-selector">
+                            <OrderSelect />
+                        </div>
+                        : <></>
+                    }
+                    {companies.map((company, index) => (
+                        <div className="company-container" key={index}>
+                            <div className="company-title">
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    {company.picture ? (
+                                        <img src={company.picture} alt="Company logo" />
+                                    ) : (
+                                        <img src="/project-default.jpg" alt="Default project image" />
+                                    )}
+                                    <h3 style={{ marginLeft: '10px' }}>{company.name}</h3>
+                                </div>
+                                <div>
+                                    <button onClick={() => navigate(`/companyMembers/${company.id}`)}>
+                                        <i className="bi bi-people"></i> Members
+                                    </button>
+                                    <button onClick={() => navigate(`/companyDetails/${company.id}`)}>
+                                        <i className="bi bi-gear-wide-connected"></i> Settings
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="projects-container">
+                                {company.projects.map((project, projectIndex) => (
+                                    <ProjectSquare
+                                        key={projectIndex}
+                                        data={project}
+                                        onClick={() => navigate(`/${company.id}/project/${project.id}/tasks`)}
+                                    />
+                                ))}
+                                <ProjectSquareCreate id={company.id} />
+                            </div>
+                        </div>
+                    ))}
                 </div>
-                {companies.map((company, index) => (
-                    <div className="company-container" key={index}>
-                        <div className="company-title">
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                {company.picture ? (
-                                    <img src={company.picture} alt="Company logo" />
-                                ) : (
-                                    <img src={projectTemplate.image} alt="Default project image" />
-                                )}
-                                <h3 style={{ marginLeft: '10px' }}>{company.name}</h3>
-                            </div>
-                            <div>
-                                <button onClick={() => navigate(`/companyMembers/${company.id}`)}>
-                                    <i className="bi bi-people"></i> Members
-                                </button>
-                                <button onClick={() => navigate(`/companyDetails/${company.id}`)}>
-                                    <i className="bi bi-gear-wide-connected"></i> Settings
-                                </button>
-                            </div>
-                        </div>
-                        <div className="projects-container">
-                            {company.projects.map((project, projectIndex) => (
-                                <ProjectSquare
-                                    key={projectIndex}
-                                    data={project}
-                                    onClick={() => navigate(`/${project.id}/tasks`)}
-                                />
-                            ))}
-                            <ProjectSquareCreate id={company.id} />
-                        </div>
-                    </div>
-                ))}
             </div>
         </div>
-    </div>
 
     return content;
 }

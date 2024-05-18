@@ -10,7 +10,7 @@ import { ProjectResponse } from "../../types/responses";
 import { useUpdateProjectMutation } from "../../features/project/updateProjectApiSlice";
 
 export default function UpdateProjectPage() {
-    const { id } = useParams<string>();
+    const { id, companyId } = useParams<string>();
     const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [budget, setBudget] = useState<string>('');
@@ -51,7 +51,7 @@ export default function UpdateProjectPage() {
     }, [isLoading]);
 
     function handleBackClick() {
-        navigate(`/project/${id}`);
+        navigate(`/${companyId}/project/${id}`);
     }
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -70,7 +70,7 @@ export default function UpdateProjectPage() {
             notifySuccess("Project has been updated");
 
             setTimeout(() => {
-                navigate(`/project/${id}`);
+                navigate(`/${companyId}/project/${id}`);
                 window.location.reload();
             }, 300);
         } catch (err) {

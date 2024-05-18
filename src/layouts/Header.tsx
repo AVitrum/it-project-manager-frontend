@@ -42,7 +42,6 @@ export default function Header() {
                             </a>
                         </> :
                         <>
-                            <a href="/">Home</a>
                             <a href="/">About</a>
                         </>
                     }

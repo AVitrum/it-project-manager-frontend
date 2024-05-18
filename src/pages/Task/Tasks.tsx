@@ -4,11 +4,10 @@ import "../../assets/project.css";
 import "../../assets/tasks.css";
 import { AssignmentResponse } from "../../types/responses";
 import { useGetTasksQuery } from "../../features/task/getAllTasksByProjectIdApiSlice";
-import Sidebar from "../../components/ui/Sidebar";
 import TaskModal from "../../components/ui/TaskModal";
-
+import TaskSidebar from "../../components/ui/TaskSidebar";
 function TasksPage() {
-    const { id } = useParams<string>();
+    const { id, companyId } = useParams<string>();
     const navigate = useNavigate();
 
     const {
@@ -46,7 +45,7 @@ function TasksPage() {
     } else if (isSuccess) {
         const tasks: AssignmentResponse[] = data;
         content = <div className="main-project-container">
-            <div><Sidebar /></div>
+            <div><TaskSidebar companyId={companyId!} id={id!} /></div>
             <div className="tasks-centered-content">
                 <div className="tasks-content">
                     <div className="task-row">
@@ -58,7 +57,8 @@ function TasksPage() {
                                     <p>Deadline: {convertDate(task.deadline)}</p>
                                     <div className="button-container-task">
                                         <button onClick={() => setTaskDetails(task)}><i className="bi bi-info-circle"></i> Details</button>
-                                        <button onClick={() => navigate(`/${id}/task/${task.id}/update`)}><i className="bi bi-sliders"></i></button>
+                                        <button onClick={() => navigate(`/${companyId}/project/${id}/task/${task.id}/addPerformer`)}><i className="bi bi-person-plus-fill"></i></button>
+                                        <button onClick={() => navigate(`/${companyId}/project/${id}/task/${task.id}/update`)}><i className="bi bi-sliders"></i></button>
                                     </div>
                                 </div> : <></>
                             ))}
@@ -71,7 +71,7 @@ function TasksPage() {
                                     <p>Deadline: {convertDate(task.deadline)}</p>
                                     <div className="button-container-task">
                                         <button onClick={() => setTaskDetails(task)}><i className="bi bi-info-circle"></i> Details</button>
-                                        <button onClick={() => navigate(`/${id}/task/${task.id}/update`)}><i className="bi bi-sliders"></i></button>
+                                        <button onClick={() => navigate(`/${companyId}/project/${id}/task/${task.id}/update`)}><i className="bi bi-sliders"></i></button>
                                     </div>
                                 </div> : <></>
                             ))}
@@ -84,7 +84,7 @@ function TasksPage() {
                                     <p>Deadline: {convertDate(task.deadline)}</p>
                                     <div className="button-container-task">
                                         <button onClick={() => setTaskDetails(task)}><i className="bi bi-info-circle"></i> Details</button>
-                                        <button onClick={() => navigate(`/${id}/task/${task.id}/update`)}><i className="bi bi-sliders"></i></button>
+                                        <button onClick={() => navigate(`/${companyId}/project/${id}/task/${task.id}/update`)}><i className="bi bi-sliders"></i></button>
                                     </div>
                                 </div> : <></>
                             ))}
@@ -97,17 +97,13 @@ function TasksPage() {
                                     <p>Deadline: {convertDate(task.deadline)}</p>
                                     <div className="button-container-task">
                                         <button onClick={() => setTaskDetails(task)}><i className="bi bi-info-circle"></i> Details</button>
-                                        <button onClick={() => navigate(`/${id}/task/${task.id}/update`)}><i className="bi bi-sliders"></i></button>
+                                        <button onClick={() => navigate(`/${companyId}/project/${id}/task/${task.id}/update`)}><i className="bi bi-sliders"></i></button>
                                     </div>
                                 </div> : <></>
                             ))}
                         </div>
                     </div>
-                    <div className="button-container">
-                        <button className="edit-button" onClick={() => navigate(`/${id}/task/create`)}>Create New Task</button>
-                        <button className="edit-button" onClick={() => navigate(`/project/${id}`)}>Project</button>
-                        <button className="edit-button" onClick={() => navigate(`/dashboard`)}>Back</button>
-                    </div>
+                    <br></br>
                 </div>
             </div>
         </div>
@@ -116,7 +112,7 @@ function TasksPage() {
     return (
         <>
             {content}
-            {taskDetails && <TaskModal task={taskDetails} onClose={() => setTaskDetails(null)} />}
+            {taskDetails && <TaskModal companyId={companyId!} task={taskDetails} onClose={() => setTaskDetails(null)} />}
         </>
     );
 }

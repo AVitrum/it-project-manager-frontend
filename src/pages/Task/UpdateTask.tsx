@@ -10,7 +10,7 @@ import { AssignmentResponse } from "../../types/responses";
 import { useUpdateTaskMutation } from "../../features/task/updateTaskApiSlice";
 
 function UpdateTaskPage() {
-    const { id, taskId } = useParams<string>();
+    const { id, taskId, companyId } = useParams<string>();
     const [theme, setTheme] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [budget, setBudget] = useState<string>('');
@@ -58,7 +58,7 @@ function UpdateTaskPage() {
     }, [isLoading]);
 
     function handleBackClick() {
-        navigate(`/${id}/tasks`);
+        navigate(`/${companyId}/project/${id}/tasks`);
         window.location.reload();
     }
 
@@ -78,7 +78,7 @@ function UpdateTaskPage() {
             notifySuccess("Task has been updated");
 
             setTimeout(() => {
-                navigate(`/${id}/tasks`);
+                navigate(`/${companyId}/project/${id}/tasks`);
                 window.location.reload();
             }, 300);
         } catch (err) {

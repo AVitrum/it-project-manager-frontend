@@ -8,14 +8,19 @@ import { ApiError } from "../../types/others";
 import { useGetCompanyQuery } from "../../features/company/getCompanyByIdApiSlice";
 import { CompanyResponse } from "../../types/responses";
 import Sidebar from "../../components/ui/Sidebar";
+import { useDispatch, useSelector } from "react-redux";
+import { useGetPerformerQuery } from "../../features/performer/getPerformerApiSlice";
+import { selectPermissions, setData } from "../../features/performer/performerSlice";
 
 function CompanyDetailsPage() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { id } = useParams<string>();
     const [isPhotoLoading, setIsPhotoLoading] = useState<boolean>(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [toastId, setToastId] = useState<Id | null>(null);
     const [uploadPhoto] = useUploadCompanyPictureMutation();
+    const permissions = useSelector(selectPermissions);
 
     useEffect(() => {
         if (isPhotoLoading) {
@@ -63,6 +68,17 @@ function CompanyDetailsPage() {
         }
     }
 
+    const {
+        data: performer,
+        isSuccess: isPerformerSuccess
+    } = useGetPerformerQuery({ id: id });
+
+    if (isPerformerSuccess) {
+        dispatch(setData({ ...performer }));
+    }
+
+    useEffect(() => { }, [permissions]);
+
     let content;
 
     const {
@@ -79,6 +95,7 @@ function CompanyDetailsPage() {
         </div>
     } else if (isSuccess) {
         const company: CompanyResponse = data;
+        console.log(permissions);
         content =
             <div className="details-container">
                 <div>
@@ -104,15 +121,23 @@ function CompanyDetailsPage() {
                             style={{ display: 'none' }}
                             onChange={handleFileChange}
                         />
+                        {permissions.updateBudget
+                            ? <div className="button-container">
+                                <button className="edit-button" onClick={() => navigate(`/editCompany/${company.id}`)}>Change Info</button>
+                                <button className="edit-button" onClick={handleChangePhoto}>Upload Image</button>
+                            </div>
+                            : <></>}
                         <div className="button-container">
-                            <button className="edit-button" onClick={() => navigate(`/editCompany/${company.id}`)}>Change Info</button>
-                            <button className="edit-button" onClick={handleChangePhoto}>Upload Image</button>
+                            {permissions.createPosition
+                                ? <button className="edit-button" onClick={() => navigate(`/addPosition/${company.id}`)}>Create New Position</button>
+                                : <></>
+                            }
+                            {permissions.updatePosition
+                                ? <button className="edit-button" onClick={() => navigate(`/updatePosition/${company.id}`)}>Update Position</button>
+                                : <></>
+                            }
                         </div>
-                        <div className="button-container">
-                            <button className="edit-button" onClick={() => navigate(`/companyMembers/${company.id}`)}>Members</button>
-                            <button className="edit-button" onClick={() => navigate(`/addPosition/${company.id}`)}>Create New Position</button>
-                            <button className="edit-button" onClick={() => navigate(`/updatePosition/${company.id}`)}>Update Position</button>
-                        </div>
+                        <button className="edit-button" onClick={() => navigate(`/companyMembers/${company.id}`)}>Members</button>
                     </div>
                 </div>
             </div>

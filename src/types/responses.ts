@@ -45,6 +45,7 @@ export type AssignmentResponse = {
     theme: string;
     description: string;
     type: string;
+    companyId: number;
     budget: number;
     createdAt: string;
     deadline: string;
@@ -52,6 +53,13 @@ export type AssignmentResponse = {
     performers: EmployeeResponse[];
     comments: CommentResponse[];
     histories: HistoryResponse[];
+    files: FileResponse[];
+};
+
+
+export type FileResponse = {
+    name: string;
+    link: string;
 };
 
 export type CommentResponse = {
@@ -72,6 +80,7 @@ export type EmployeeResponse = {
     position: string,
     salary: number
     picture: string | undefined
+    permissions: PositionInCompanyResponse;
 };
 
 export type PositionInCompanyResponse = {

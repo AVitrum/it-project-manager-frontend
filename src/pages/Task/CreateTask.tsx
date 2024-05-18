@@ -8,7 +8,7 @@ import { AuthInput } from "../../components/ui/AuthInput";
 import { useCreateTaskMutation } from "../../features/task/createTaskApiSlice";
 
 function CreateTaskPage() {
-    const { id } = useParams<string>();
+    const { id, companyId } = useParams<string>();
     const [theme, setTheme] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [budget, setBudget] = useState<string>('');
@@ -33,7 +33,7 @@ function CreateTaskPage() {
     }, [isLoading]);
 
     function handleBackClick() {
-        navigate(`/${id}/tasks`);
+        navigate(`/${companyId}/project/${id}/tasks`);
         window.location.reload();
     }
 
@@ -53,7 +53,7 @@ function CreateTaskPage() {
             notifySuccess("Task has been created");
 
             setTimeout(() => {
-                navigate(`/${id}/tasks`);
+                navigate(`/${companyId}/project/${id}/tasks`);
                 window.location.reload();
             }, 300);
         } catch (err) {

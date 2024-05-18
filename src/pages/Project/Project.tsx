@@ -8,13 +8,18 @@ import { closeNotify, notifyError, notifyInfoLoading } from "../../components/ui
 import { ApiError } from "../../types/others";
 import { useUploadProjectImageMutation } from "../../features/project/uploadProjectPhotoApiSlice";
 import { Id } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { selectPermissions, setData } from "../../features/performer/performerSlice";
+import { useGetPerformerQuery } from "../../features/performer/getPerformerApiSlice";
 
 function ProjectPage() {
-    const { id } = useParams<string>();
+    const { id, companyId } = useParams<string>();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isPhotoLoading, setIsPhotoLoading] = useState<boolean>(false);
     const [toastId, setToastId] = useState<Id | null>(null);
+    const permissions = useSelector(selectPermissions);
 
     const [uploadPhoto] = useUploadProjectImageMutation();
 
@@ -67,6 +72,17 @@ function ProjectPage() {
         }
     }
 
+    const {
+        data: performer,
+        isSuccess: isPerformerSuccess
+    } = useGetPerformerQuery({ id: companyId });
+
+    if (isPerformerSuccess) {
+        dispatch(setData({ ...performer }));
+    }
+
+    useEffect(() => { }, [permissions]);
+
     if (isProjectLoading) {
         return (
             <div className="main-project-container">
@@ -79,7 +95,7 @@ function ProjectPage() {
         );
     }
 
-    if (!isProjectSuccess || !project) {
+    if (!isProjectSuccess || !project || !isPerformerSuccess) {
         return null;
     }
 
@@ -102,12 +118,17 @@ function ProjectPage() {
                         onChange={handleFileChange}
                     />
                     <div className="button-container">
-                        <button className="edit-button" onClick={() => navigate(`/${id}/tasks`)}>Tasks</button>
-                        <button className="edit-button" onClick={() => navigate(`/project/${id}/members`)}>Performers</button>
+                        {permissions.updateProject
+                            ? <>
+                                <button className="edit-button" onClick={() => navigate(`/${companyId}/project/${id}/update`)}>Update Info</button>
+                                <button className="edit-button" onClick={handleChangePhoto}>Upload Image</button>
+                            </>
+                            : <></>
+                        }
                     </div>
                     <div className="button-container">
-                        <button className="edit-button" onClick={() => navigate(`/project/${id}/update`)}>Update Info</button>
-                        <button className="edit-button" onClick={handleChangePhoto}>Upload Image</button>
+                        <button className="edit-button" onClick={() => navigate(`/${companyId}/project/${id}/tasks`)}>Tasks</button>
+                        <button className="edit-button" onClick={() => navigate(`/${companyId}/project/${id}/members`)}>Performers</button>
                         <button className="edit-button" onClick={() => navigate(`/dashboard`)}>Back</button>
                     </div>
                     <br></br>
@@ -120,12 +141,13 @@ function ProjectPage() {
 
 function ProjectCompany({ companyId, projectId }: { companyId: string, projectId: string }) {
     const { data: companyData, isSuccess: isCompanySuccess } = useGetCompanyQuery({ id: companyId });
+    const permissions = useSelector(selectPermissions);
 
     if (!isCompanySuccess || !companyData) {
         return null;
     }
 
-    return <Search data={companyData.employees} id={projectId} />;
+    return permissions.addUser ? <Search data={companyData.employees} id={projectId} /> : <></>;
 }
 
 export default ProjectPage;

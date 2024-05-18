@@ -2,19 +2,24 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ProjectResponse } from "../../types/responses";
 import "../../assets/company-details.css";
 import "../../assets/members.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentEmail } from "../../features/auth/authSlice";
 import { ApiError } from "../../types/others";
 import { notifyError } from "../../components/ui/Notify";
 import Sidebar from "../../components/ui/Sidebar";
 import { useGetProjectQuery } from "../../features/project/getProjectByIdApiSlice";
 import { useRemoveFromProjectMutation } from "../../features/project/removePerformerApiSlice";
+import { selectPermissions, setData } from "../../features/performer/performerSlice";
+import { useGetPerformerQuery } from "../../features/performer/getPerformerApiSlice";
+import { useEffect } from "react";
 
 function ProjectPerformersPage() {
-    const { id } = useParams<string>();
+    const { id, companyId } = useParams<string>();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const currentEmail = useSelector(selectCurrentEmail);
+    const permissions = useSelector(selectPermissions);
     const [removeFromProject] = useRemoveFromProjectMutation();
 
     async function handleRemove(email: string) {
@@ -43,6 +48,17 @@ function ProjectPerformersPage() {
         }
     }
 
+    const {
+        data: performer,
+        isSuccess: isPerformerSuccess
+    } = useGetPerformerQuery({ id: companyId });
+
+    if (isPerformerSuccess) {
+        dispatch(setData({ ...performer }));
+    }
+
+    useEffect(() => { }, [permissions]);
+
     let content;
 
     const {
@@ -66,28 +82,30 @@ function ProjectPerformersPage() {
                 </div>
                 <div className="centered-content-details">
                     <div className="company">
-                        <h1>Company Members: {project.performers.length}</h1>
+                        <h1>Project Performers: {project.performers.length}</h1>
                         <div className="employee-list">
                             {project.performers.map((employee, index) => (
                                 <div className="member-container" key={index}>
                                     <div style={{ display: 'flex', alignItems: 'center' }}>
                                         {employee.picture ?
                                             <img src={employee.picture} alt="Company logo" />
-                                            : <img src="../../public/user.png" alt="Default project image" />
+                                            : <img src="/user.png" alt="Default project image" />
                                         }
                                         <h3>{employee.username}</h3>
                                     </div>
                                     <div>
                                         {employee.email === currentEmail ?
                                             <></> :
-                                            <button onClick={() => handleRemove(employee.email)}><i className="bi bi-door-open-fill"></i> Kick</button>
+                                            permissions.deleteUser
+                                                ? <button onClick={() => handleRemove(employee.email)}><i className="bi bi-door-open-fill"></i> Kick</button>
+                                                : <></>
                                         }
                                     </div>
                                 </div>
                             ))}
                         </div>
                         <br></br>
-                        <button className="add-user-button" onClick={() => navigate(`/project/${id}`)}>Back</button>
+                        <button className="add-user-button" onClick={() => navigate(`/${companyId}/project/${id}`)}>Back</button>
                     </div>
                 </div>
             </div>

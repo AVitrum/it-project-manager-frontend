@@ -20,5 +20,5 @@ export const { setActive } = popupSlice.actions;
 
 export default popupSlice.reducer;
 
-export const selectPopup = (state: RootState) => state.popup;
-export const selectActive = (state: RootState) => state.popup.isActive;
+export const selectPopup = (state: RootState) => state.performer;
+export const selectActive = (state: RootState) => state.performer.isActive;

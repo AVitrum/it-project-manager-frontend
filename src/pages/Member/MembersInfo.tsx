@@ -8,6 +8,8 @@ import { useGetEmployeeQuery } from "../../features/company/getEmployeeApiSlice"
 import { notifyError, notifySuccess } from "../../components/ui/Notify";
 import { ApiError } from "../../types/others";
 import { AuthInput } from "../../components/ui/AuthInput";
+import { useSelector } from "react-redux";
+import { selectPermissions } from "../../features/performer/performerSlice";
 
 
 function MembersInfoPage() {
@@ -17,6 +19,7 @@ function MembersInfoPage() {
     const [position, setPosition] = useState<string | null>(null);
     const [loaded, setLoaded] = useState<boolean>(false);
     const [updateEmployee] = useUpdateEmployeeMutation();
+    const permissions = useSelector(selectPermissions);
 
     const handleSalaryChange = (e: ChangeEvent<HTMLInputElement>) => setSalary(e.target.value);
 
@@ -48,7 +51,7 @@ function MembersInfoPage() {
         }
         return selectorContent;
     };
-    
+
     useEffect(() => {
     }, [position, salary]);
 
@@ -138,7 +141,7 @@ function MembersInfoPage() {
                     {isChangePressed ? (
                         <button className="confirm-button" onClick={handleSubmit}>Submit</button>
                     ) : (
-                        <button className="edit-button" onClick={() => setIsChangePressed(true)}>Change employee info</button>
+                        permissions.updateUser ? <button className="edit-button" onClick={() => setIsChangePressed(true)}>Change employee info</button> : <></>
                     )}
                     <button className="edit-button" onClick={() => navigate(`/companyMembers/${id}`)}>Back</button>
                 </div>

@@ -23,13 +23,15 @@ import CreateTaskPage from "./pages/Task/CreateTask.tsx";
 import ProjectPerformersPage from "./pages/Project/ProjectPerformers.tsx";
 import UpdateProjectPage from "./pages/Project/UpdateProject.tsx";
 import UpdateTaskPage from "./pages/Task/UpdateTask.tsx";
+import DiagramPage from "./pages/Project/Diagram.tsx";
+import AddTaskPerformerPage from "./pages/Task/AddTaskPerformer.tsx";
 
 export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
         {/* public routes */}
-        <Route index element={<HomePage />} />
+        <Route index element={<AuthPage />} />
         <Route path="OAuth" element={<OAuthPage />} />
         <Route path="verification" element={<VerificationPage />} />
         <Route path="auth" element={<AuthPage />} />
@@ -44,13 +46,15 @@ export default function AppRoutes() {
           <Route path="companyMembers/:id/info/:employeeId" element={<MembersInfoPage />} />
           <Route path="createCompany" element={<CreateCompanyPage />} />
           <Route path="addPosition/:id" element={<CreatePositionPage />} />
-          <Route path=":id/tasks" element={<TasksPage />} />
-          <Route path=":id/task/create" element={<CreateTaskPage />} />
-          <Route path=":id/task/:taskId/update" element={<UpdateTaskPage />} />
+          <Route path=":companyId/project/:id/tasks" element={<TasksPage />} />
+          <Route path=":companyId/project/:id/tasks/diagram" element={<DiagramPage />} />
+          <Route path=":companyId/project/:id/task/create" element={<CreateTaskPage />} />
+          <Route path=":companyId/project/:id/task/:taskId/update" element={<UpdateTaskPage />} />
+          <Route path=":companyId/project/:id/task/:taskId/addPerformer" element={<AddTaskPerformerPage />} />
           <Route path="updatePosition/:id" element={<UpdatePositionPage />} />
-          <Route path="project/:id" element={<ProjectPage />} />
-          <Route path="project/:id/members" element={<ProjectPerformersPage />} />
-          <Route path="project/:id/update" element={<UpdateProjectPage />} />
+          <Route path=":companyId/project/:id" element={<ProjectPage />} />
+          <Route path=":companyId/project/:id/members" element={<ProjectPerformersPage />} />
+          <Route path=":companyId/project/:id/update" element={<UpdateProjectPage />} />
           <Route path="createProject/:id" element={<CreateProjectPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="changePassword" element={<ChangePasswordPage />} />
