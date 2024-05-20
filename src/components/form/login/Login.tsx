@@ -43,7 +43,7 @@ const Login = () => {
     }, [isLoading]);
 
     function handleRegisterClick() {
-        dispatch(setActive(true));
+        navigate("/auth");
     }
 
     function handleResetClick() {
@@ -90,6 +90,7 @@ const Login = () => {
 
             notifySuccess("Welcome!");
             navigate('/dashboard');
+            window.location.reload();
         } catch (err) {
             setIsLoading(false);
 

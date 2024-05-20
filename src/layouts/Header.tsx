@@ -23,7 +23,7 @@ export default function Header() {
             data: data,
             isSuccess
         } = useGetProfileQuery(undefined);
-    
+
         if (isSuccess) {
             const profile: ProfileResponse = data;
             dispatch(setUserInfo({ username: profile.username, image: profile.imageUrl, email: profile.email }));
@@ -42,7 +42,7 @@ export default function Header() {
                             </a>
                         </> :
                         <>
-                            <a href="/">About</a>
+                            <a href="/contacts">Contacts</a>
                         </>
                     }
                     {token ? (

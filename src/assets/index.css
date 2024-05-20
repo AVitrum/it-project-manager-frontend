@@ -135,9 +135,15 @@ header {
     padding: 40px;
 }
 
-.wrapper .form-box.login {
-    transition: transform .5s ease;
-    transform: translateX(0);
+.form-box.login {
+    width: 100%;
+    min-width: 500px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .5);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    padding: 40px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
 }
 
 .wrapper.active .form-box.login {
@@ -146,10 +152,15 @@ header {
 }
 
 
-.wrapper .form-box.register {
-    position: absolute;
-    transition: none;
-    transform: translateX(550px);
+.form-box.register {
+    width: 100%;
+    min-width: 500px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .5);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    padding: 40px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
 }
 
 .wrapper.active .form-box.register {

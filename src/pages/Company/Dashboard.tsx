@@ -55,12 +55,6 @@ export default function Dashboard() {
             }
             <div className="centered-content">
                 <div className="main-container">
-                    {companies.length > 0
-                        ? <div className="order-selector">
-                            <OrderSelect />
-                        </div>
-                        : <></>
-                    }
                     {companies.map((company, index) => (
                         <div className="company-container" key={index}>
                             <div className="company-title">
@@ -72,7 +66,7 @@ export default function Dashboard() {
                                     )}
                                     <h3 style={{ marginLeft: '10px' }}>{company.name}</h3>
                                 </div>
-                                <div>
+                                <div style={{marginRight: "20px"}}>
                                     <button onClick={() => navigate(`/companyMembers/${company.id}`)}>
                                         <i className="bi bi-people"></i> Members
                                     </button>

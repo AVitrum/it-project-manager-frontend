@@ -41,7 +41,7 @@ export default function Register() {
     }, [isLoading]);
 
     function handleLoginClick() {
-        dispatch(setActive(false));
+        navigate("/login");
     }
 
     function handleGoogleAuthClick(e: React.MouseEvent<HTMLButtonElement>) {

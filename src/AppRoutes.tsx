@@ -14,7 +14,7 @@ import CreatePositionPage from "./pages/Position/CreatePosition.tsx";
 import CreateProjectPage from "./pages/Project/CreateProject.tsx";
 import OAuthPage from "./pages/Auth/OAuth.tsx";
 import VerificationPage from "./pages/Auth/Verification.tsx";
-import AuthPage from "./pages/Auth/Auth.tsx";
+import AuthPage from "./pages/Auth/Registration.tsx";
 import ProfilePage from "./pages/Auth/Profile.tsx";
 import ChangePasswordPage from "./pages/Auth/ChangePassword.tsx";
 import UpdatePositionPage from "./pages/Position/UpdatePosition.tsx";
@@ -25,6 +25,8 @@ import UpdateProjectPage from "./pages/Project/UpdateProject.tsx";
 import UpdateTaskPage from "./pages/Task/UpdateTask.tsx";
 import DiagramPage from "./pages/Project/Diagram.tsx";
 import AddTaskPerformerPage from "./pages/Task/AddTaskPerformer.tsx";
+import LoginPage from "./pages/Auth/Login.tsx";
+import ContactsPage from "./pages/Contacts.tsx";
 
 export default function AppRoutes() {
   return (
@@ -35,6 +37,8 @@ export default function AppRoutes() {
         <Route path="OAuth" element={<OAuthPage />} />
         <Route path="verification" element={<VerificationPage />} />
         <Route path="auth" element={<AuthPage />} />
+        <Route path="contacts" element={<ContactsPage />} />
+        <Route path="login" element={<LoginPage />}></Route>
         <Route path="resetPassword" element={<GetPasswordToken />} />
 
         {/* protected routes */}
