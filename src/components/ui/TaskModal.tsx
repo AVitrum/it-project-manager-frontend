@@ -14,7 +14,6 @@ import { useToReviewMutation } from "../../features/task/toReviewApiSlice";
 import { useGetPerformerQuery } from "../../features/performer/getPerformerApiSlice";
 import { selectPermissions, setData } from "../../features/performer/performerSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { selectActive } from "../../features/popup/popupSlice";
 
 interface TaskModalProps {
     task: AssignmentResponse;
@@ -229,8 +228,12 @@ export default function TaskModal({ task, companyId, onClose }: TaskModalProps) 
                         })}
                         <button onClick={handleAddCommentClick} className="send-message-button">Send message</button>
                         <br></br>
-                        <button className="send-file-button" onClick={() => handleFileUpload(task.id)}>Upload File</button>
-                        {task.type !== "COMPLETED" && task.type !== "IN_REVIEW" ? <button className="send-file-button" onClick={handleToReview}>Complete</button> : <></>}
+                        {task.type !== "COMPLETED" && task.type !== "IN_REVIEW"
+                            ? <>
+                                <button className="send-file-button" onClick={() => handleFileUpload(task.id)}>Upload File</button>
+                                <button className="send-file-button" onClick={handleToReview}>Complete</button>
+                            </>
+                            : <></>}
                         {permissions.updateTask && task.type === "IN_REVIEW" && (
                             <>
                                 <button className="send-file-button" onClick={handleMarkTask}>Approve</button>

@@ -48,10 +48,34 @@
     color: #e7eaed;
 }
 
+.project-content .delete-button {
+    margin-top: 20px;
+    width: 100%;
+    min-width: 200px;
+    height: 60px;
+    background: #ff0000;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 1em;
+    color: #ffffff;
+    font-weight: 500;
+    padding: 0 15px;
+    align-items: center;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.project-content .delete-button:hover {
+    background-color: #ff000077;
+    color: #e7eaed;
+}
+
 .charts-container {
     display: flex;
     justify-content: center;
-    gap: 20px; /* Adjust the gap as needed */
+    gap: 20px; 
 }
 
 .chart {

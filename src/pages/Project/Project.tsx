@@ -11,6 +11,7 @@ import { Id } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPermissions, setData } from "../../features/performer/performerSlice";
 import { useGetPerformerQuery } from "../../features/performer/getPerformerApiSlice";
+import { useDeleteProjectMutation } from "../../features/project/removeProjectApiSlice";
 
 function ProjectPage() {
     const { id, companyId } = useParams<string>();
@@ -22,6 +23,7 @@ function ProjectPage() {
     const permissions = useSelector(selectPermissions);
 
     const [uploadPhoto] = useUploadProjectImageMutation();
+    const [deleteProject] = useDeleteProjectMutation();
 
     const { data: project, isLoading: isProjectLoading, isSuccess: isProjectSuccess } = useGetProjectQuery({ id: id });
 
@@ -37,6 +39,31 @@ function ProjectPage() {
     function handleChangePhoto() {
         if (fileInputRef) {
             fileInputRef.current?.click();
+        }
+    }
+
+    async function handleDelete() {
+        if (confirm("Do you wish to delete the project?")) {
+            try {
+                await deleteProject({ id: id }).unwrap();
+                setTimeout(() => {
+                    navigate("/dashboard");
+                    window.location.reload();
+                }, 300);
+            } catch (err) {
+                setIsPhotoLoading(false);
+                if (err && typeof err === 'object' && 'status' in err) {
+                    const error = err as ApiError;
+                    if (error.status === 400) {
+                        notifyError(error.data.title);
+                    } else {
+                        notifyError('Server error');
+                    }
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 300);
+                }
+            }
         }
     }
 
@@ -123,6 +150,10 @@ function ProjectPage() {
                                 <button className="edit-button" onClick={() => navigate(`/${companyId}/project/${id}/update`)}>Update Info</button>
                                 <button className="edit-button" onClick={handleChangePhoto}>Upload Image</button>
                             </>
+                            : <></>
+                        }
+                        {permissions.deleteProject
+                            ? <button className="delete-button" onClick={handleDelete}>Delete Project</button>
                             : <></>
                         }
                     </div>
